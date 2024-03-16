@@ -1,0 +1,7 @@
+$('turbolinks:load').ready(function() {
+  const render = "<%= j todo_partials 'errors', locals: { todo: @todo } %>"; 
+  const errors = "<%= @todo.errors.keys.map(&:to_s) %>";
+
+  App.Todo.renderErrors(render, errors);
+});
+

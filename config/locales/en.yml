@@ -1,0 +1,31 @@
+en:
+  errors:
+    one: "error"
+    other: "%{count} errors"
+  helpers:
+    submit:
+      new: "New %{model}"
+      create: "Create %{model}"
+      edit: "Update %{model}"
+      close: "Close"
+  activerecord:
+    models:
+      todo:
+        one: "Todo"
+        other: "Todos"
+    attributes:
+      todo:
+        title: "Title"
+        description: "Description"
+        status: "Status"
+        statuses:
+          pending: "Pending"
+          completed: "Completed"
+  messages:
+    todo:
+      created: "Todo created successfully"
+      updated: "Todo updated successfully"
+      destroyed: "Todo destroyed successfully"
+      not_destroyed: "Todo could not be destroyed"
+      errors: "Todo could not be saved"
+

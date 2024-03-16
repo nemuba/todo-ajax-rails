@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :host) %>
+  port: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :port) %>
+  username: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :username) %>
+  password: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :password) %>
+
+development:
+  <<: *default
+  database: todo-ajax-rails_development
+
+test:
+  <<: *default
+  database: todo-ajax-rails_test
+
+production:
+  <<: *default
+  database: todo-ajax-rails_production
+  username: todo-ajax-rails
+  password: <%= ENV['TODO-AJAX-RAILS_DATABASE_PASSWORD'] %>

@@ -1,0 +1,10 @@
+<tr>
+  <td><%= todo.title %></td>
+  <td><%= todo.description %></td>
+  <td><%= translate_enum(Todo, :status, todo.status) %></td>
+  <td colspan="3">
+    <%= link_show(todo) %>
+    <%= link_edit(edit_todo_path(todo)) %>
+    <%= link_confirm_delete(confirm_delete_todo_path(todo)) %>
+  </td>
+</tr>
