@@ -1,7 +1,7 @@
-<tr>
-  <td><%= todo.title %></td>
-  <td><%= todo.description %></td>
-  <td><%= translate_enum(Todo, :status, todo.status) %></td>
+<tr id="<%= "todo-#{todo.id}"%>">
+  <td id="todo-title-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :title), todo.title) %></td>
+  <td id="todo-description-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :description), todo.description) %></td>
+  <td id="todo-status-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :status), translate_enum(Todo, :status, todo.status)) %></td>
   <td colspan="3">
     <%= link_show(todo) %>
     <%= link_edit(edit_todo_path(todo)) %>

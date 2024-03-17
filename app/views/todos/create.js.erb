@@ -1,7 +1,20 @@
 $('turbolinks:load').ready(function() {
-  const render = "<%= j todo_partials 'errors', locals: { todo: @todo } %>";
-  const errors = "<%= @todo.errors.keys.map(&:to_s) %>";
+  <% if @todo.errors.any? %>
+    const title = "<%= todo_title_modal(:new) %>";
+    const form = "<%= j todo_partials 'form', locals: { todo: @todo } %>";
+  
+    App.Todo.new(title, form);
 
-  App.Todo.renderErrors(render, errors);
+    const render = "<%= j todo_partials 'errors', locals: { todo: @todo } %>"; 
+    const errors = "<%= @todo.errors.keys.map(&:to_s) %>";
+
+    App.Todo.renderErrors(render, errors);
+  <% else %>
+    const title = "<%= translate_model(Todo) %>";
+    const message = "<%= t('messages.todo.created') %>";
+    const todo = "<%= j todo_partials 'todo', locals: { todo: @todo } %>";
+    App.Todo.append(todo);
+    App.Toast.add(title, message);
+  <% end %>
 });
 

@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-md-10">
+    <p class="mt-2">
+      <%= translate_attribute(Todo, header) %>
+    </p>
+  </div>
+  <div class="col-md-2">
+    <%= link_sort(todos_path(sort: header, direction: :asc), { icon: 'arrow-up' })  %>
+    <%= link_sort(todos_path(sort: header, direction: :desc), { icon: 'arrow-down' }) %>
+  </div>
+</div>

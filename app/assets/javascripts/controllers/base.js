@@ -8,7 +8,6 @@ class Base {
    * @return {Alert} - Alert instance.
    */
   static index(notice) {
-    if (notice == "") return;
     Alert.add(notice)
   }
 }

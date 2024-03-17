@@ -8,17 +8,6 @@ class Modal {
     this.modal = new bootstrap.Modal($(modal));
     this.title = title;
     this.body = body;
-    this.init();
-  }
-
-  /**
-   * Initializes the modal dialog events.
-   * @public
-   */
-  init() {
-    this.modal._element.addEventListener('hidden.bs.modal', () => {
-      this.close();
-    });
   }
 
   /**
@@ -30,14 +19,6 @@ class Modal {
     $(this.title).html(title);
     $(this.body).html(form);
     this.modal.show();
-  }
-
-  /**
-   * Closes the modal dialog and clears the title and body content.
-   */
-  close() {
-    $(this.title).html('');
-    $(this.body).html('');
   }
 }
 

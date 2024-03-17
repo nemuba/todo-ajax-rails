@@ -2,12 +2,12 @@
 
 # TodosController
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[show edit update destroy confirm_delete]
+  before_action :set_todo, only: %i[show edit update destroy confirm_delete inline]
   before_action :instance_todo, only: %i[create]
 
   # GET /todos or /todos.json
   def index
-    @todos = Todo.all
+    @todos = TodosService.index(params)
   end
 
   # GET /todos/1 or /todos/1.json
@@ -23,29 +23,19 @@ class TodosController < ApplicationController
 
   # POST /todos or /todos.json
   def create
+    @todo.save
+
     respond_to do |format|
-      if @todo.save
-        format.html { redirect_to todos_url, notice: I18n.t('messages.todo.created') }
-        format.json { render :show, status: :created, location: @todo }
-      else
-        format.js
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @todo.errors, status: :unprocessable_entity }
-      end
+      format.js
     end
   end
 
   # PATCH/PUT /todos/1 or /todos/1.json
   def update
+    @todo.update(todo_params)
+
     respond_to do |format|
-      if @todo.update(todo_params)
-        format.html { redirect_to todos_url, notice: I18n.t('messages.todo.updated') }
-        format.json { render :show, status: :ok, location: @todo }
-      else
-        format.js
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @todo.errors, status: :unprocessable_entity }
-      end
+      format.js
     end
   end
 
@@ -58,13 +48,16 @@ class TodosController < ApplicationController
 
   # DELETE /todos/1 or /todos/1.json
   def destroy
+    @todo.destroy
+
     respond_to do |format|
-      if @todo.destroy
-        format.html { redirect_to todos_url, notice: I18n.t('messages.todo.destroyed') }
-      else
-        format.js
-        format.html { redirect_to todos_url, notice: I18n.t('messages.todo.not_destroyed') }
-      end
+      format.js
+    end
+  end
+
+  def inline
+    respond_to do |format|
+      format.js
     end
   end
 

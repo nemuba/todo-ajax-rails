@@ -52,7 +52,7 @@ class RenderErrors {
    * @private
    */
   #focusFieldError() {
-    $(`${this.form} #todo_${this.list.at(0)}`).focus();
+    $(`${this.form}`).find(`#todo_${this.list.at(0)}`).focus();
   }
 
   /**

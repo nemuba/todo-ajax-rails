@@ -15,6 +15,10 @@ class Tooltip {
   init() {
     this.tooltips.forEach(tooltip => {
       new bootstrap.Tooltip(tooltip)
+
+      $(tooltip).on('click', () => {
+        $(tooltip).tooltip('hide');
+      });
     });
   }
 }

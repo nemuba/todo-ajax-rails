@@ -6,7 +6,9 @@ const MODAL_TITLE = `${MODAL} .modal-title`;
 const MODAL_BODY = `${MODAL} #modal-body`;
 const MODAL_ERRORS = `${MODAL} #form-errors`;
 const MODAL_FORM = `${MODAL} #todo`;
-
+const TODO_TARGET = '#todos';
+const EMPTY_ROWS = '#empty_rows';
+const TODO_TOTAL = '#todos-total';
 /**
  * Represents a Todo.
  * @class
@@ -35,20 +37,110 @@ class Todo extends Base {
   }
 
   /**
+   * Appends a new Todo to the list.
+   * @static
+   * @param {HTMLElement} todo - The new Todo to be appended.
+   * @returns {void}
+   */
+  static append(todo) {
+    $(TODO_TARGET).append(todo).fadeIn();
+    $(EMPTY_ROWS).hide();
+    this.updateTotal();
+  }
+
+  /**
+   * Prepends a new Todo to the list.
+   * @static
+   * @param {HTMLElement} todo - The new Todo to be prepended.
+   * @returns {void}
+   */
+  static prepend(todo) {
+    $(TODO_TARGET).prepend(todo).fadeIn();
+    $(EMPTY_ROWS).hide();
+    this.updateTotal();
+  }
+
+  /**
+   * Updates an existing Todo.
+   * @static
+   * @param {string} id - The id of the Todo.
+   * @param {HTMLElement} todo - The updated Todo.
+   * @returns {void}
+   */
+  static update(id, todo) {
+    $(TODO_TARGET).find(`#todo-${id}`).replaceWith(todo).fadeIn();
+    $(EMPTY_ROWS).hide();
+    this.updateTotal();
+  }
+
+  /**
+   * Removes an existing Todo.
+   * @static
+   * @param {string} id - The id of the Todo.
+   * @returns {void}
+   */
+  static remove(id) {
+    $(TODO_TARGET).find(`#todo-${id}`).remove().fadeOut();
+
+    if (this.rows() == 0) {
+      $(EMPTY_ROWS).show();
+    } else {
+      $(EMPTY_ROWS).hide();
+    }
+
+    this.updateTotal();
+  }
+
+  /**
+   * Returns the number of rows in the Todo list.
+   * @static
+   * @returns {number} The number of rows in the Todo list.
+   */
+  static rows() {
+    return $(TODO_TARGET).find('tr[id^="todo-"]').length;
+  }
+
+  /**
+   * Updates the total number of records in the Todo list.
+   * @static
+   * @returns {void}
+   */
+  static updateTotal() {
+    new Tooltip();
+
+    $(TODO_TOTAL).text(`Total de registros: ${this.rows()}`);
+  }
+
+  /**
+   * Renders the list of Todos.
+   * @static
+   * @param {HTMLElement} todos - The list of Todos to be rendered.
+   * @returns {void}
+   */
+  static renderTodos(todos) {
+    $(TODO_TARGET).html(todos);
+    this.updateTotal();
+  }
+
+  /**
+   * Renders inline the form for the Todo.
+   * @static
+   * @param {string} id - The id of the Todo.
+   * @param {string} field - The field of the Todo.
+   * @param {HTMLElement} form - The form to be rendered.
+   * @returns {void}
+   */
+  static renderInline(id, field, form) {
+    $(`${TODO_TARGET} #todo-${id}`).find(`#todo-${field}-${id}`).html(form);
+  }
+
+  /**
    * The modal for the Todo.
    * @static
    * @type {App.Modal}
    * @returns {App.Modal} The modal for the Todo.
    */
   static get Modal() { return new Modal(MODAL, MODAL_TITLE, MODAL_BODY) }
-
-  /**
-   * Clears the notice for the Todo.
-   * @static
-   */
-  // static index() {
-  //   this.#clearNotice();
-  // }
 
   /**
    * Creates a new Todo.

@@ -6,22 +6,44 @@
 <table class="table table-relative">
   <thead>
     <tr>
-      <th><%= translate_attribute(Todo, :title) %></th>
-      <th><%= translate_attribute(Todo, :description) %></th>
-      <th><%= translate_attribute(Todo, :status) %></th>
+      <th><%= todo_partials('sortable', locals: { header: :title }) %></th>
+      <th><%= todo_partials('sortable', locals: { header: :description }) %></th>
+      <th><%= todo_partials('sortable', locals: { header: :status }) %></th>
       <th colspan="3">Ações</th>
+    </tr>
+    <tr>
+      <% ['title','description','status'].each do |column| %>
+        <td>
+          <%= todo_partials 'search', locals: { field: column } %>
+        </td>
+      <% end %>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
-  <tbody>
-    <%= todo_partials 'todo', collection: @todos %>
+  <tbody id="todos">
+    <% if @todos.any? %>
+      <%= todo_partials 'todo', collection: @todos %>
+    <% else %>
+      <%= todo_partials 'empty_rows' %>
+    <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6" id="todos-total">
+        Total de registros: <%= @todos.count %>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 <%= link_new(new_todo_path) %>
 
 <script type="text/javascript">
   $('turbolinks:load').ready(function() {
-    App.Todo.index("<%= notice %>");
+    if("<%= notice %>" != "") {
+      // App.Todo.index("<%= notice %>");
+      App.Toast.add("<%= Todo.model_name.human %>","<%= notice %>");
+    }
   });
 </script>

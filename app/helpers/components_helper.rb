@@ -53,6 +53,14 @@ module ComponentsHelper
            remote: true })
   end
 
+  def link_sort(url, opts = {})
+    link_to fa_icon(opts[:icon]), url, class: 'd-block', remote: opts[:remote] || true, disabled: opts[:disabled] || false
+  end
+
+  def link_edit_inline(url, title)
+    link_to title, url, remote: true, data: { bs_toggle: 'tooltip', bs_title: translate_link('edit') }
+  end
+
   def close_modal_button(title)
     button_tag title, type: 'button', class: 'btn btn-danger', data: { bs_dismiss: 'modal' }
   end
@@ -65,6 +73,6 @@ module ComponentsHelper
               form.object.new_record? ? :new : :edit
             end
 
-    form.submit translate_btn(form.object.class, title), class: 'btn btn-primary'
+    form.submit translate_btn(form.object.class, title), class: 'btn btn-primary', data: { bs_dismiss: 'modal' }
   end
 end
