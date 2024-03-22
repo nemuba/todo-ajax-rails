@@ -12,8 +12,6 @@ $('turbolinks:load').ready(function() {
   <% else %>
     const title = "<%= translate_model(Todo) %>";
     const message = "<%= t('messages.todo.created') %>";
-    const todo = "<%= j todo_partials 'todo', locals: { todo: @todo } %>";
-    App.Todo.append(todo);
     App.Toast.add(title, message);
   <% end %>
 });

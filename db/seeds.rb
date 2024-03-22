@@ -6,3 +6,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+1..1_000.times do |i|
+  Todo.create(title: "Todo #{i}", description: "Description #{i}", status: [0,1].sample)
+end

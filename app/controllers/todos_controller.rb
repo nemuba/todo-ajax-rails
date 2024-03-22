@@ -7,7 +7,7 @@ class TodosController < ApplicationController
 
   # GET /todos or /todos.json
   def index
-    @todos = TodosService.index(params)
+    @todos = TodoService.index(params)
   end
 
   # GET /todos/1 or /todos/1.json
@@ -56,9 +56,8 @@ class TodosController < ApplicationController
   end
 
   def inline
-    respond_to do |format|
-      format.js
-    end
+    @todo.field = params[:field]
+    @todo.turbo_stream_inline('#todos')
   end
 
   private
