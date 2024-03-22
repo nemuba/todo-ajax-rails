@@ -42,8 +42,8 @@ class Todo extends Base {
    * @param {HTMLElement} todo - The new Todo to be appended.
    * @returns {void}
    */
-  static append(todo) {
-    $(TODO_TARGET).append(todo).fadeIn();
+  static append(target = TODO_TARGET, todo) {
+    $(target).append(todo).fadeIn();
     $(EMPTY_ROWS).hide();
     this.updateTotal();
   }
@@ -54,8 +54,8 @@ class Todo extends Base {
    * @param {HTMLElement} todo - The new Todo to be prepended.
    * @returns {void}
    */
-  static prepend(todo) {
-    $(TODO_TARGET).prepend(todo).fadeIn();
+  static prepend(target = TODO_TARGET, todo) {
+    $(target).prepend(todo).fadeIn();
     $(EMPTY_ROWS).hide();
     this.updateTotal();
   }
@@ -67,8 +67,8 @@ class Todo extends Base {
    * @param {HTMLElement} todo - The updated Todo.
    * @returns {void}
    */
-  static update(id, todo) {
-    $(TODO_TARGET).find(`#todo-${id}`).replaceWith(todo).fadeIn();
+  static update(target = TODO_TARGET, id, todo) {
+    $(target).find(`#todo-${id}`).replaceWith(todo).fadeIn();
     $(EMPTY_ROWS).hide();
     this.updateTotal();
   }
@@ -79,8 +79,8 @@ class Todo extends Base {
    * @param {string} id - The id of the Todo.
    * @returns {void}
    */
-  static remove(id) {
-    $(TODO_TARGET).find(`#todo-${id}`).remove().fadeOut();
+  static remove(target = TODO_TARGET, id) {
+    $(target).find(`#todo-${id}`).remove().fadeOut();
 
     if (this.rows() == 0) {
       $(EMPTY_ROWS).show();
@@ -130,7 +130,7 @@ class Todo extends Base {
    * @param {HTMLElement} form - The form to be rendered.
    * @returns {void}
    */
-  static renderInline(id, field, form) {
+  static renderInline(target = TODO_TARGET, id, field, form) {
     $(`${TODO_TARGET} #todo-${id}`).find(`#todo-${field}-${id}`).html(form);
   }
 

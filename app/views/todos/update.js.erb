@@ -10,12 +10,9 @@ $('turbolinks:load').ready(function() {
 
     App.Todo.renderErrors(render, errors);
   <% else %>
-    const id = "<%= @todo.id %>";
     const title = "<%= translate_model(Todo) %>";
     const message = "<%= t('messages.todo.updated') %>";
-    const todo = "<%= j todo_partials 'todo', locals: { todo: @todo } %>";
     App.Toast.add(title, message);
-    App.Todo.update(Number(id), todo);
   <% end %>
 });
 

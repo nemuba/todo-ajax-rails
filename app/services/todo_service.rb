@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# TodosService
-class TodosService
+# TodoService
+class TodoService
   attr_accessor :params
 
   def initialize(params)
@@ -13,24 +13,19 @@ class TodosService
   end
 
   def index
-    if sort?
-      sort
-    else
-      return search(:title) if title?
-      return search(:description) if description?
-      return search(:status) if status?
+    return sort if sort?
+    return search if search?
 
-      Todo.all
-    end
+    Todo.limit(50)
   end
 
   private
 
-  def search(field)
-    if field == :status
-      Todo.where(status: params[:status])
+  def search
+    if status?
+      Todo.where(status: params[:status]).limit(50)
     else
-      Todo.where("#{field} LIKE ?", "%#{params[field]}%")
+      Todo.where("#{field} LIKE ?", "%#{params[field]}%").limit(50)
     end
   end
 
@@ -38,12 +33,16 @@ class TodosService
     Todo.order(params[:sort] => params[:direction])
   end
 
+  def field
+    title? ? 'title' : 'description'
+  end
+
   def search?
-    params[:search].present?
+    params.keys.any? { |key| key.in? %w[title description status] }
   end
 
   def sort?
-    params[:sort].present?
+    params.keys.any? { |key| key.in? %w[sort direction] }
   end
 
   def title?
