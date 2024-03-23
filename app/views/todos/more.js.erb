@@ -1,0 +1,3 @@
+$('turbolinks:load', function() {
+  $("<%= j todo_partials 'more', locals: { todo: @todo } %>").insertAfter(`#todo-${<%= @todo.id %>}`);
+});

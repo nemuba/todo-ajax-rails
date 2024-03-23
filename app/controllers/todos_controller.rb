@@ -2,7 +2,7 @@
 
 # TodosController
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[show edit update destroy confirm_delete inline partial]
+  before_action :set_todo, only: %i[show edit update destroy confirm_delete inline more]
   before_action :instance_todo, only: %i[create]
 
   # GET /todos or /todos.json
@@ -14,6 +14,12 @@ class TodosController < ApplicationController
     @todos = TodoService.index(params)
 
     send_data render_to_string(partial: 'todos/partials/todo', collection: @todos)
+  end
+
+  def more
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /todos/1 or /todos/1.json
@@ -62,12 +68,9 @@ class TodosController < ApplicationController
   end
 
   def inline
-    @todo.field = params[:field]
-    @todo.turbo_stream_inline('#todos')
-  end
-
-  def partial
-    send_data render_to_string(partial: 'todos/partials/todo', locals: { todo: @todo })
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

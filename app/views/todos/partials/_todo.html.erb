@@ -1,4 +1,13 @@
 <tr id="<%= "todo-#{todo.id}"%>">
+  <th>
+    <button
+      id="btn-more-todo-<%= todo.id %>"
+      class="btn btn-sm btn-outline-primary"
+      onclick="App.Todo.toggleMore('<%= todo.id %>','<%= more_todo_path(todo.id) %>')"
+    >
+      <i class="fa fa-plus"></i>
+    </button>
+  </th>
   <td id="todo-title-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :title), todo.title) %></td>
   <td id="todo-description-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :description), todo.description) %></td>
   <td id="todo-status-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :status), translate_enum(Todo, :status, todo.status)) %></td>

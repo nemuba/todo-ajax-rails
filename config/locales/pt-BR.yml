@@ -25,6 +25,8 @@ pt-BR:
         statuses:
           pending: Pendente
           completed: Concluída
+        created_at: Criado em
+        updated_at: Atualizado em
   messages:
     todo:
       created: Tarefa criada com sucesso

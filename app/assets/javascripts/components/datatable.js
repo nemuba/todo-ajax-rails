@@ -9,8 +9,17 @@ class Datatable {
   }
 
   init() {
-    this.load();
+    this.loading();
+    this.loadData();
+  }
 
+  reload() {
+    $(`${this.table} #btn-reload`).on('click', () => {
+      this.init();
+    });
+  }
+
+  loadData() {
     setTimeout(() => {
       $.get(this.url).done((data) => {
         this.render(data);
@@ -18,19 +27,7 @@ class Datatable {
     }, 1000);
   }
 
-  reload() {
-    $(`${this.table} #btn-reload`).on('click', () => {
-      this.load();
-
-      setTimeout(() => {
-        $.get(this.url).done((data) => {
-          this.render(data);
-        });
-      }, 1000);
-    });
-  }
-
-  load() {
+  loading() {
     $(this.target).html(this.loadTemplate());
   }
 
@@ -38,9 +35,9 @@ class Datatable {
     return `
       <tr>
         <td colspan="6" class="text-center">
-        <div class="d-flex align-items-center">
+        <div class="d-flex justify-content-center">
           <strong>Loading...</strong>
-          <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+          <div class="spinner-border spinner-border-sm mx-3 my-1" role="status" aria-hidden="true"></div>
         </div>
         </td>
       </tr>
