@@ -3,7 +3,11 @@
 
 <h1><%= translate_model(Todo) %></h1>
 
-<table class="table table-relative">
+<table 
+  id="todos_datatable"
+  class="table table-striped table-relative table-hover"
+  data-target="#todos"
+  data-url="<%= datatable_todos_path %>">
   <thead>
     <tr>
       <th><%= todo_partials('sortable', locals: { header: :title }) %></th>
@@ -17,21 +21,18 @@
           <%= todo_partials 'search', locals: { field: column } %>
         </td>
       <% end %>
-      <th colspan="3"></th>
+      <th colspan="3" class="text-center">
+        <button id="btn-reload" class="btn btn-sm btn-default"><i class="fa fa-refresh"></i></button>
+      </th>
     </tr>
   </thead>
 
-  <tbody id="todos">
-    <% if @todos.any? %>
-      <%= todo_partials 'todo', collection: @todos %>
-    <% else %>
-      <%= todo_partials 'empty_rows' %>
-    <% end %>
+  <tbody id="todos" class="table-group-divider">
   </tbody>
   <tfoot>
     <tr>
       <td colspan="6" id="todos-total">
-        Total de registros: <%= @todos.count %>
+        Total de registros: 0
       </td>
     </tr>
   </tfoot>
@@ -41,8 +42,9 @@
 
 <script type="text/javascript">
   $('turbolinks:load').ready(function() {
+    new App.Datatable('#todos_datatable')
+
     if("<%= notice %>" != "") {
-      // App.Todo.index("<%= notice %>");
       App.Toast.add("<%= Todo.model_name.human %>","<%= notice %>");
     }
   });
