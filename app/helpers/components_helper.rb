@@ -32,7 +32,7 @@ module ComponentsHelper
   # @param url [String] The URL for the link.
   # @return [String] The generated show link.
   def link_show(url)
-    link(url, { icon: 'eye', title: translate_link('show'), class_name: 'btn btn-sm btn-info' })
+    link(url, { icon: 'eye', title: translate_link('show'), class_name: 'btn btn-sm btn-info dropdown-item' })
   end
 
   # Generates an edit link with the given URL.
@@ -58,7 +58,13 @@ module ComponentsHelper
   end
 
   def link_edit_inline(url, title)
-    link_to title, url, remote: true, data: { bs_toggle: 'tooltip', bs_title: translate_link('edit') }
+    link_to(
+      title,
+      url,
+      class: 'text-decoration-none text-dark',
+      remote: true,
+      data: { bs_toggle: 'tooltip', bs_title: translate_link('edit') }
+    )
   end
 
   def close_modal_button(title)

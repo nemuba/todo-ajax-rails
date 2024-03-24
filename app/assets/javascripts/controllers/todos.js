@@ -182,6 +182,10 @@ class Todo extends Base {
     this.Modal.show(title, body);
   }
 
+  static renderMore(id, more) {
+    $(more).insertAfter(`#todo-${id}`);
+  }
+
   static toggleMore(id, url) {
     if ($(TODO_TARGET).find(`#more-todo-${id}`).length > 0) {
       $(TODO_TARGET).find(`#more-todo-${id}`).remove();
