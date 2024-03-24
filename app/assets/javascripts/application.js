@@ -20,7 +20,7 @@
 //= require_tree ./controllers
 //= require_tree .
 
-// $('turbolinks:load', () => {
-//   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-//   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-// });
+
+window.addEventListener('DOMContentLoaded', () => {
+  App.ToggleTheme.setTheme(localStorage.getItem('theme') || 'light')
+})

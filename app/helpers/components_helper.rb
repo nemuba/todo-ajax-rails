@@ -61,7 +61,7 @@ module ComponentsHelper
     link_to(
       title,
       url,
-      class: 'text-decoration-none text-dark',
+      class: 'text-decoration-none text-block mt-2',
       remote: true,
       data: { bs_toggle: 'tooltip', bs_title: translate_link('edit') }
     )

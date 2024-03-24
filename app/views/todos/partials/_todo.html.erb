@@ -12,7 +12,7 @@
   <td id="todo-description-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :description), todo.description) %></td>
   <td id="todo-status-<%= todo.id %>"><%= link_edit_inline(inline_todo_path(id: todo.id, field: :status), translate_enum(Todo, :status, todo.status)) %></td>
   <td colspan="3" class="hidden">
-    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
       Ações
     </button>
     <ul class="dropdown-menu">
