@@ -2,16 +2,17 @@
 
 # TodosController
 class TodosController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_todo, only: %i[show edit update destroy confirm_delete inline more]
   before_action :instance_todo, only: %i[create]
 
   # GET /todos or /todos.json
   def index
-    @todos = TodoService.index(params)
+    @todos = TodoService.index(params, current_user)
   end
 
   def datatable
-    @todos = TodoService.index(params)
+    @todos = TodoService.index(params, current_user)
 
     send_data render_to_string(partial: 'todos/partials/todo', collection: @todos)
   end
@@ -27,7 +28,7 @@ class TodosController < ApplicationController
 
   # GET /todos/new
   def new
-    @todo = Todo.new
+    @todo = current_user.todos.build
   end
 
   # GET /todos/1/edit
@@ -77,11 +78,11 @@ class TodosController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_todo
-    @todo = Todo.find(params[:id])
+    @todo = current_user.todos.find(params[:id])
   end
 
   def instance_todo
-    @todo = Todo.new(todo_params)
+    @todo = current_user.todos.build(todo_params)
   end
 
   # Only allow a list of trusted parameters through.

@@ -2,35 +2,36 @@
 
 # TodoService
 class TodoService
-  attr_accessor :params
+  attr_accessor :params, :user
 
-  def initialize(params)
+  def initialize(params, user)
     @params = params
+    @user = user
   end
 
-  def self.index(params)
-    new(params).index
+  def self.index(params, user)
+    new(params, user).index
   end
 
   def index
     return sort if sort?
     return search if search?
 
-    Todo.limit(50)
+    user.todos.limit(50)
   end
 
   private
 
   def search
     if status?
-      Todo.where(status: params[:status]).limit(50)
+      user.todos.where(status: params[:status]).limit(50)
     else
-      Todo.where("#{field} LIKE ?", "%#{params[field]}%").limit(50)
+      user.todos.where("#{field} LIKE ?", "%#{params[field]}%").limit(50)
     end
   end
 
   def sort
-    Todo.order(params[:sort] => params[:direction])
+    user.todos.order(params[:sort] => params[:direction])
   end
 
   def field

@@ -4,6 +4,8 @@
 class Todo < ApplicationRecord
   include TurboStream
 
+  belongs_to :user
+
   attribute :field, :string
 
   enum status: { pending: 0, completed: 1 }

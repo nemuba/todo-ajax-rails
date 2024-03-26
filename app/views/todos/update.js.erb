@@ -2,10 +2,10 @@ $('turbolinks:load').ready(function() {
   <% if @todo.errors.any? %>
     const title = "<%= todo_title_modal(:edit) %>";
     const form = "<%= j todo_partials 'form', locals: { todo: @todo } %>";
-  
+
     App.Todo.edit(title, form);
 
-    const render = "<%= j todo_partials 'errors', locals: { todo: @todo } %>"; 
+    const render = "<%= j todo_partials 'errors', locals: { todo: @todo } %>";
     const errors = "<%= @todo.errors.keys.map(&:to_s) %>";
 
     App.Todo.renderErrors(render, errors);

@@ -54,7 +54,8 @@ module ComponentsHelper
   end
 
   def link_sort(url, opts = {})
-    link_to fa_icon(opts[:icon]), url, class: 'd-block', remote: opts[:remote] || true, disabled: opts[:disabled] || false
+    link_to fa_icon(opts[:icon]), url, class: 'd-block', remote: opts[:remote] || true,
+                                       disabled: opts[:disabled] || false
   end
 
   def link_edit_inline(url, title)

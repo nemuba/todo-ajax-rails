@@ -10,6 +10,10 @@ module TurboStream
       @action_view.extend(TodosHelper)
     end
 
+    def channel_name
+      "#{self.class.name.downcase}_channel_#{user_id}"
+    end
+
     # templates
     def append
       action_view.todo_partials('todo', locals: { todo: self })

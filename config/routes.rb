@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  mount ActionCable.server => "/cable"
+
+  devise_for :users
   root "app#index"
   resources :todos do
     get "confirm_delete", on: :member
