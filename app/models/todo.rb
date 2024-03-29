@@ -7,6 +7,7 @@ class Todo < ApplicationRecord
   belongs_to :user
 
   attribute :field, :string
+  attribute :inline_editing, :boolean
 
   enum status: { pending: 0, completed: 1 }
   validates :title, :description, presence: true

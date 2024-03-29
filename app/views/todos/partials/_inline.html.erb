@@ -1,4 +1,5 @@
 <%= form_with(model: todo, remote: true, html: {id: "todo"} ) do |form| %>
+  <%= form.hidden_field :inline_editing, value: true %>
   <% if field == 'status' %>
     <%= form.select field, options_for_select(Todo.statuses.map { |k, _| [translate_enum(Todo, :status, k), k] }), { include_blank: 'Selecione' }, class: 'form-control', onchange: "this.form.requestSubmit()" %>
   <% else %>
