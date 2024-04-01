@@ -1,9 +1,22 @@
 
 class ToggleTheme {
+  static init() {
+    const theme = this.getTheme() || 'light';
+    this.setTheme(theme);
+  }
+
   static setTheme(theme) {
     $('html').attr('data-bs-theme', theme)
     localStorage.setItem('theme', theme)
     this.setBtnTheme(theme)
+  }
+
+  static getTheme() {
+    return localStorage.getItem('theme')
+  }
+
+  static currentTheme() {
+    this.getTheme() === 'dark' ? this.iconDark() : this.iconLight();
   }
 
   static setBtnTheme(theme) {

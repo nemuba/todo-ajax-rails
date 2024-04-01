@@ -17,6 +17,7 @@ gem 'rails', '~> 5.2.8', '>= 5.2.8.1'
 gem 'rails-i18n'
 gem 'redis', '~> 4.0'
 gem 'sassc-rails'
+gem 'shog'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 

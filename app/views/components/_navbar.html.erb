@@ -8,6 +8,18 @@
       <div class="d-flex w-100"></div>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <div class="btn-group dropstart">
+          <% if user_signed_in? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= current_user.email %>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+                </li>
+              </ul>
+            </li>
+          <% end %>
           <li class="nav-item dropdown">
             <a id="bd-theme" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Theme
@@ -32,3 +44,9 @@
     </div>
   </div>
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    App.ToggleTheme.init();
+  });
+</script>

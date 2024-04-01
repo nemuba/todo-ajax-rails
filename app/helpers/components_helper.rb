@@ -12,8 +12,12 @@ module ComponentsHelper
   # @option opts [String] :icon The icon for the link.
   # @return [String] The generated link.
   def link(url, opts = {})
-    link_to url, class: opts[:class_name] || 'btn btn-sm btn-primary', remote: opts[:remote] || true,
-                 data: { bs_toggle: 'tooltip', bs_title: opts[:title] } do
+    link_to url, class: opts[:class_name] || 'btn btn-sm btn-primary',
+                 remote: opts[:remote] || true ,
+                 data: {
+                  bs_toggle: 'tooltip',
+                  bs_title: opts[:title]
+                 } do
       opts[:icon] ? fa_icon(opts[:icon]) : opts[:title]
     end
   end
