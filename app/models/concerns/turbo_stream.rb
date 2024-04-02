@@ -1,30 +1,39 @@
 # frozen_string_literal: true
 
 module TurboStream
-  include TurboActions
   extend ActiveSupport::Concern
+  include TurboActions
 
   included do
+    def action_cable
+      @action_cable ||= ActionCable.server
+    end
+
+    delegate :broadcast, to: :action_cable
+
     def action_view
-      @action_view = ApplicationController.renderer.new
-      @action_view.extend(TodosHelper)
+      @action_view ||= ApplicationController.renderer.new
+      @action_view.extend("#{class_name.pluralize.camelize}Helper".constantize)
     end
 
     def channel_name
-      "#{self.class.name.downcase}_channel_#{user_id}"
+      "#{class_name.downcase}_channel_#{user_id}"
     end
 
-    # templates
-    def append
-      action_view.todo_partials('todo', locals: { todo: self })
+    def class_name
+      self.class.name
     end
 
-    def replace
-      action_view.todo_partials('todo', locals: { todo: self })
+    def render_partial(partial_name, locals = {})
+      action_view.send("#{class_name.downcase}_partials", partial_name, locals: locals)
+    end
+
+    def partial
+      render_partial('todo', { todo: self })
     end
 
     def inline
-      action_view.todo_partials('inline', locals: { todo: self, field: field })
+      render_partial('inline', { todo: self, field: field })
     end
   end
 end

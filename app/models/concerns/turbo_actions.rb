@@ -5,21 +5,25 @@ module TurboActions
   extend ActiveSupport::Concern
 
   included do
+    def turbo_stream_prepend(target)
+      broadcast(channel_name, action: 'prepend', target: target, content: partial)
+    end
+
     def turbo_stream_append(target)
-      ActionCable.server.broadcast(channel_name, action: 'append', target: target, content: append)
+      broadcast(channel_name, action: 'append', target: target, content: partial)
     end
 
     def turbo_stream_replace(target)
-      ActionCable.server.broadcast(channel_name, action: 'update', target: target, content: replace, id: id)
+      broadcast(channel_name, action: 'update', target: target, content: partial, id: id)
     end
 
     def turbo_stream_remove(target)
-      ActionCable.server.broadcast(channel_name, action: 'remove', target: target, id: id)
+      broadcast(channel_name, action: 'remove', target: target, id: id)
     end
 
     def turbo_stream_inline(target)
-      ActionCable.server.broadcast(channel_name, action: 'inline', target: target, content: inline,
-                                                 id: id, field: field)
+      broadcast(channel_name, action: 'inline', target: target, content: inline,
+                              id: id, field: field)
     end
   end
 end

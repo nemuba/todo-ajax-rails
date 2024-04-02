@@ -1,5 +1,13 @@
 
+/**
+ * Represents a DataTable component.
+ * @class
+ */
 class Datatable {
+  /**
+   * Creates an instance of Datatable.
+   * @param {string} table - The table element selector.
+   */
   constructor(table) {
     this.table = table;
     this.target = $(table).data('target');
@@ -8,17 +16,26 @@ class Datatable {
     this.reload();
   }
 
+  /**
+   * Initializes the DataTable component.
+   */
   init() {
     this.loading();
     this.loadData();
   }
 
+  /**
+   * Reloads the DataTable component.
+   */
   reload() {
     $(`${this.table} #btn-reload`).on('click', () => {
       this.init();
     });
   }
 
+  /**
+   * Loads data for the DataTable component.
+   */
   loadData() {
     setTimeout(() => {
       $.get(this.url).done((data) => {
@@ -27,10 +44,17 @@ class Datatable {
     }, 1000);
   }
 
+  /**
+   * Displays a loading state for the DataTable component.
+   */
   loading() {
     $(this.target).html(this.loadTemplate());
   }
 
+  /**
+   * Generates the HTML template for the loading state.
+   * @returns {string} The HTML template.
+   */
   loadTemplate() {
     return `
       <tr>
@@ -44,6 +68,10 @@ class Datatable {
     `;
   }
 
+  /**
+   * Renders the DataTable component with the provided data.
+   * @param {Array} data - The data to render.
+   */
   render(data) {
     App.Todo.renderTodos(data);
   }
