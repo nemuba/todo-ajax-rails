@@ -10,9 +10,7 @@ const MODAL_FORM = `${MODAL} #todo`;
 const TODO_TARGET = '#todos';
 const EMPTY_ROWS = '#empty_rows';
 const TODO_TOTAL = '#todos-total';
-/**
- * Represents a Todo.
- * @class
+
 /**
  * Represents a Todo.
  * @class
