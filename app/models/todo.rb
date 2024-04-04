@@ -2,7 +2,7 @@
 
 # Todo
 class Todo < ApplicationRecord
-  include TurboStream
+  include Broadcaster
 
   belongs_to :user
 
@@ -13,7 +13,5 @@ class Todo < ApplicationRecord
   validates :title, :description, presence: true
   validates :status, presence: true, inclusion: { in: statuses.keys }
 
-  after_create_commit { turbo_stream_append('#todos') }
-  after_update_commit { turbo_stream_replace('#todos') }
-  after_destroy_commit { turbo_stream_remove('#todos') }
+  broadcast_to :todos
 end

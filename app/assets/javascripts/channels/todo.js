@@ -1,25 +1,26 @@
 App.todo_channel = App.cable.subscriptions.create("TodoChannel", {
   connected: function () {
-    console.log('connected');
+    console.log('TodoChannel connected');
   },
 
   disconnected: function () {
-    console.log('connected');
+    console.log('TodoChannel disconnected');
   },
 
   received: function ({ action, target, content, id, field }) {
+    const stream = new Todo(target);
     switch (action) {
       case 'append' || 'prepend':
-        App.Todo[action](target, content);
+        stream[action](content);
         break;
       case 'update':
-        App.Todo.update(target, id, content);
+        stream[action](id, content)
         break;
       case 'remove':
-        App.Todo.remove(target, id);
+        stream[action](id);
         break;
       case 'inline':
-        App.Todo.renderInline(target, id, field, content);
+        stream.renderInline(id, field, content);
         break;
     }
   }

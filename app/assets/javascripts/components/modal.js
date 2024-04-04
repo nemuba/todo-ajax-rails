@@ -20,5 +20,9 @@ class Modal {
     $(this.body).html(form);
     this.modal.show();
   }
+
+  close() {
+    this.modal.hide();
+  }
 }
 
