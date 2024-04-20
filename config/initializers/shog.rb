@@ -9,6 +9,10 @@ Shog.configure do
     msg.red
   end
 
+  match /ActionCable/ do |msg, matches|
+    msg.yellow.bold
+  end
+
   severity_tag :info, ->(msg) { msg.strip.green }
   severity_tag :debug, ->(msg) { msg.strip.blue }
   severity_tag :warn, ->(msg) { msg.strip.yellow }
