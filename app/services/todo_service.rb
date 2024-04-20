@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 # TodoService
-class TodoService
+class TodoService < ApplicationService
   attr_accessor :params, :user
 
-  def initialize(params, user)
-    @params = params
-    @user = user
+  def initialize(*args)
+    @params = args.first
+    @user = args.last
+    super(args)
   end
 
-  def self.index(params, user)
-    new(params, user).index
-  end
-
-  def index
+  def call
     return sort if sort?
     return search if search?
 

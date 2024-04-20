@@ -8,11 +8,11 @@ class TodosController < ApplicationController
 
   # GET /todos or /todos.json
   def index
-    @todos = TodoService.index(params, current_user)
+    @todos = TodoService.call(params, current_user)
   end
 
   def datatable
-    @todos = TodoService.index(params, current_user)
+    @todos = TodoService.call(params, current_user)
 
     send_data render_to_string(partial: 'todos/partials/todo', collection: @todos)
   end

@@ -20,7 +20,3 @@
 //= require_tree ./controllers
 //= require_tree .
 
-
-window.addEventListener('DOMContentLoaded', () => {
-  App.ToggleTheme.setTheme(localStorage.getItem('theme') || 'light')
-})

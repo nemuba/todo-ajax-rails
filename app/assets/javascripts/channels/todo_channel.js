@@ -23,5 +23,14 @@ App.todo_channel = App.cable.subscriptions.create("TodoChannel", {
         stream.renderInline(id, field, content);
         break;
     }
-  }
+  },
+  append: function (id) {
+    this.perform('append', { id: id, target: 'todos' });
+  },
+  prepend: function (id) {
+    this.perform('prepend', { id: id, target: 'todos' });
+  },
+  update: function (id) {
+    this.perform('update', { id: id, target: 'todos' });
+  },
 });
