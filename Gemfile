@@ -40,8 +40,9 @@ end
 
 group :test do
   gem 'action-cable-testing'
+  gem 'capybara', '>= 3.26'
+  gem 'selenium-webdriver'
   gem 'shoulda-matchers'
-
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -12,7 +12,7 @@ module ComponentsHelper
   # @option opts [String] :icon The icon for the link.
   # @return [String] The generated link.
   def link(url, opts = {})
-    link_to url, class: opts[:class_name] || 'btn btn-sm btn-primary',
+    link_to url, id: opts[:id], class: opts[:class_name] || 'btn btn-sm btn-primary',
                  remote: opts[:remote] || true,
                  data: {
                    bs_toggle: 'tooltip',
@@ -28,7 +28,7 @@ module ComponentsHelper
   # @return [String] The generated new link.
   def link_new(url)
     link(url,
-         { title: translate_link('new', model: translate_model(Todo)), class_name: 'btn btn-sm btn-primary' })
+         { id: 'new-todo', title: translate_link('new', model: translate_model(Todo)), class_name: 'btn btn-sm btn-primary' })
   end
 
   # Generates a show link with the given URL.
@@ -36,7 +36,7 @@ module ComponentsHelper
   # @param url [String] The URL for the link.
   # @return [String] The generated show link.
   def link_show(url)
-    link(url, { icon: 'eye', title: translate_link('show'), class_name: 'btn btn-sm btn-info dropdown-item' })
+    link(url, { id: 'show-todo', icon: 'eye', title: translate_link('show'), class_name: 'btn btn-sm btn-info dropdown-item' })
   end
 
   # Generates an edit link with the given URL.
@@ -44,7 +44,7 @@ module ComponentsHelper
   # @param url [String] The URL for the link.
   # @return [String] The generated edit link.
   def link_edit(url)
-    link(url, { icon: 'edit', title: translate_link('edit'), class_name: 'btn btn-sm btn-success' })
+    link(url, { id: 'edit-todo', icon: 'edit', title: translate_link('edit'), class_name: 'btn btn-sm btn-success' })
   end
 
   # Generates a confirm delete link with the given URL.
@@ -53,7 +53,7 @@ module ComponentsHelper
   # @return [String] The generated confirm delete link.
   def link_confirm_delete(url)
     link(url,
-         { icon: 'trash', title: translate_link('confirm_delete'), class_name: 'btn btn-sm btn-danger',
+         { id: 'confirm-delete-todo', icon: 'trash', title: translate_link('confirm_delete'), class_name: 'btn btn-sm btn-danger',
            remote: true })
   end
 
@@ -66,6 +66,7 @@ module ComponentsHelper
     link_to(
       title,
       url,
+      id: 'inline-todo',
       class: 'text-decoration-none text-block mt-2',
       remote: true,
       data: { bs_toggle: 'tooltip', bs_title: translate_link('edit') }
