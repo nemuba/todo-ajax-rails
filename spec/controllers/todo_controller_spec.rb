@@ -44,7 +44,9 @@ RSpec.describe TodosController, type: :controller do
     end
 
     it 'increases the number of todos by 1' do
-      expect { post :create, params: { todo: attributes_for(:todo, :with_user) }, format: :js }.to change(Todo, :count).by(1)
+      expect do
+        post :create, params: { todo: attributes_for(:todo, :with_user) }, format: :js
+      end.to change(Todo, :count).by(1)
     end
 
     it 'broadcasts to the todos channel' do

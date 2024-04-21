@@ -6,11 +6,15 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
-module RSpec::Rails::FeatureCheck
-  module_function
+module RSpec
+  module Rails
+    module FeatureCheck
+      module_function
 
-  def has_action_cable_testing?
-    true
+      def has_action_cable_testing?
+        true
+      end
+    end
   end
 end
 

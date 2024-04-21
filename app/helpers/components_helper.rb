@@ -28,7 +28,8 @@ module ComponentsHelper
   # @return [String] The generated new link.
   def link_new(url)
     link(url,
-         { id: 'new-todo', title: translate_link('new', model: translate_model(Todo)), class_name: 'btn btn-sm btn-primary' })
+         { id: 'new-todo', title: translate_link('new', model: translate_model(Todo)),
+           class_name: 'btn btn-sm btn-primary' })
   end
 
   # Generates a show link with the given URL.
@@ -36,7 +37,9 @@ module ComponentsHelper
   # @param url [String] The URL for the link.
   # @return [String] The generated show link.
   def link_show(url)
-    link(url, { id: 'show-todo', icon: 'eye', title: translate_link('show'), class_name: 'btn btn-sm btn-info dropdown-item' })
+    link(url,
+         { id: 'show-todo', icon: 'eye', title: translate_link('show'),
+           class_name: 'btn btn-sm btn-info dropdown-item' })
   end
 
   # Generates an edit link with the given URL.

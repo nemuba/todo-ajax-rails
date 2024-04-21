@@ -25,7 +25,9 @@ RSpec.describe TodoChannel, type: :channel do
     it 'broadcasts to the stream prepend' do
       subscribe
       todo = create(:todo, user: current_user)
-      expect { perform :prepend, id: todo.id, target: 'todos' }.to have_broadcasted_to("todo_channel_#{current_user.id}")
+      expect do
+        perform :prepend, id: todo.id, target: 'todos'
+      end.to have_broadcasted_to("todo_channel_#{current_user.id}")
     end
 
     it 'broadcasts to the stream update' do
