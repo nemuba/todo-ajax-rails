@@ -23,12 +23,12 @@ class TodoService < ApplicationService
     if status?
       user.todos.where(status: params[:status]).limit(50)
     else
-      user.todos.where("#{field} LIKE ?", "%#{params[field]}%").limit(50)
+      user.todos.search(field, params[field]).limit(50)
     end
   end
 
   def sort
-    user.todos.order(params[:sort] => params[:direction])
+    user.todos.order_by(params[:sort], params[:direction])
   end
 
   def field

@@ -14,4 +14,7 @@ class Todo < ApplicationRecord
   validates :status, presence: true, inclusion: { in: statuses.keys }
 
   broadcast_to :todos
+
+  scope :search, ->(column, term) { where("#{column} ILIKE ?", "%#{term}%") }
+  scope :order_by, ->(column, direction) { order("#{column} #{direction}") }
 end
