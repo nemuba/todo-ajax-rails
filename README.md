@@ -11,6 +11,11 @@ This is a simple TODO app that I am building to learn Ruby on Rails, and to get 
   - [x] Confirm deletion
 - [x] Search by columns
 - [x] Sort by columns
+- [ ] Add tests
+  - [x] Models
+  - [x] Services
+  - [x] Channels
+  - [ ] Controllers
 
 ## Technologies
 
