@@ -40,10 +40,11 @@ RSpec.feature 'Root path', type: :feature do
     expect(page).to have_selector('table', id: 'todos_datatable')
   end
 
-  # scenario "Visitor add new todo", js: true do
-  #   login_as(user)
-  #   visit root_path
-  #   click_link 'Nova Tarefa'
-  #   expect(page).to have_selector('h5', text: 'Nova Tarefa')
-  # end
+  scenario "Visitor add new todo", js: true do
+    login_as(user)
+    visit root_path
+    click_link 'Nova Tarefa'
+    sleep(5) # espera 5 segundos
+    # o restante do seu teste
+  end
 end
