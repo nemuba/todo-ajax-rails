@@ -24,6 +24,7 @@ gem 'uglifier', '>= 1.3.0'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
 
   gem 'database_cleaner'
   gem 'factory_bot_rails', '5.2.0'

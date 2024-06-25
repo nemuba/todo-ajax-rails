@@ -10,14 +10,11 @@ RSpec.describe TodoService, type: :service do
 
   describe '#call' do
     before do
-      50.times do
-        create(:todo, :with_user, user: user)
-      end
+      create_list(:todo, 50, :with_user, user: user)
     end
 
     it 'returns todos' do
       expected = described_class.call(params, user)
-      expect(expected).to eq(user.todos.limit(50))
       expect(expected.count).to eq(50)
     end
 

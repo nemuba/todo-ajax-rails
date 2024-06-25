@@ -4,11 +4,11 @@ require 'rails_helper'
 
 RSpec.describe ApplicationCable::Connection, type: :channel do
   let(:user)    { instance_double(User, id: 325) }
-  let(:env)     { instance_double('env') }
-  let(:warden)  { instance_double('warden', user: user) }
+  let(:env)     { instance_double(env) }
+  let(:warden)  { instance_double(warden, user: user) }
 
   before do
-    allow_any_instance_of(ApplicationCable::Connection).to receive(:env).and_return(env)
+    allow(described_class).to receive(:env).and_return(env)
     allow(env).to receive(:[]).with('warden').and_return(warden)
   end
 
@@ -18,12 +18,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
   end
 
   context 'without a verified user' do
-    let(:warden) { instance_double('warden', user: nil) }
-
-    before do
-      allow_any_instance_of(ApplicationCable::Connection).to receive(:env).and_return(env)
-      allow(env).to receive(:[]).with('warden').and_return(warden)
-    end
+    let(:warden) { instance_double(warden, user: nil) }
 
     it 'rejects connection' do
       expect { connect '/cable' }.to have_rejected_connection

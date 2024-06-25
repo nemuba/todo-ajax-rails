@@ -56,8 +56,11 @@ module ComponentsHelper
   # @return [String] The generated confirm delete link.
   def link_confirm_delete(url)
     link(url,
-         { id: 'confirm-delete-todo', icon: 'trash', title: translate_link('confirm_delete'), class_name: 'btn btn-sm btn-danger',
-           remote: true })
+         {
+           id: 'confirm-delete-todo', icon: 'trash',
+           title: translate_link('confirm_delete'),
+           class_name: 'btn btn-sm btn-danger', remote: true
+         })
   end
 
   def link_sort(url, opts = {})

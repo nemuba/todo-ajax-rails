@@ -2,39 +2,39 @@
 
 require 'rails_helper'
 
-RSpec.feature 'Root path', type: :feature do
+RSpec.describe 'Root path', type: :feature do
   let(:user) { create(:user) }
 
-  scenario 'Visitor without login' do
+  it 'Visitor without login' do
     visit root_path
     expect(page).to have_selector('h2', text: 'Log in')
   end
 
-  scenario 'Visitor sees welcome text' do
+  it 'Visitor sees welcome text' do
     login_as(user)
     visit root_path
     expect(page).to have_selector('h1', text: 'Tarefa')
   end
 
-  scenario 'Visitor sees user email' do
+  it 'Visitor sees user email' do
     login_as(user)
     visit root_path
     expect(page).to have_selector('li', text: user.email)
   end
 
-  scenario 'Visitor sees logout link' do
+  it 'Visitor sees logout link' do
     login_as(user)
     visit root_path
     expect(page).to have_selector('a', text: 'Sign out')
   end
 
-  scenario 'Visitor sees new todo link' do
+  it 'Visitor sees new todo link' do
     login_as(user)
     visit root_path
     expect(page).to have_selector('a', text: 'Nova Tarefa', class: 'btn btn-sm btn-primary')
   end
 
-  scenario 'Visitor sees todo list' do
+  it 'Visitor sees todo list' do
     login_as(user)
     visit root_path
     expect(page).to have_selector('table', id: 'todos_datatable')
