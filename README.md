@@ -11,11 +11,11 @@ This is a simple TODO app that I am building to learn Ruby on Rails, and to get 
   - [x] Confirm deletion
 - [x] Search by columns
 - [x] Sort by columns
-- [ ] Add tests
+- [x] Add tests
   - [x] Models
   - [x] Services
   - [x] Channels
-  - [ ] Controllers
+  - [x] Controllers
 
 ## Technologies
 
@@ -39,4 +39,3 @@ This is a simple TODO app that I am building to learn Ruby on Rails, and to get 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-

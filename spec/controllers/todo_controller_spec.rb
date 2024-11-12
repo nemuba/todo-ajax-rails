@@ -96,4 +96,25 @@ RSpec.describe TodosController, type: :controller do
       end.to have_broadcasted_to("todo_channel_#{user.id}").from_channel(TodoChannel)
     end
   end
+
+  describe 'GET #confirm_delete' do
+    it 'returns http success', js: true do
+      get :confirm_delete, params: { id: create(:todo, user_id: user.id).id }, format: :js
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe 'GET #inline' do
+    it 'returns http success', js: true do
+      get :inline, params: { id: create(:todo, user_id: user.id).id, field: 'title' }, format: :js
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe 'GET #more' do
+    it 'returns http success', js: true do
+      get :more, params: { id: create(:todo, user_id: user.id).id }, format: :js
+      expect(response).to have_http_status(:success)
+    end
+  end
 end
