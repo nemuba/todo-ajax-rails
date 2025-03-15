@@ -2,6 +2,8 @@
 
 # TodosController
 class TodosController < ApplicationController
+  protect_from_forgery except: %i[confirm_delete inline more]
+
   before_action :authenticate_user!
   before_action :set_todo, only: %i[show edit update destroy confirm_delete inline more]
   before_action :instance_todo, only: %i[create]
