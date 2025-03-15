@@ -12,11 +12,14 @@ development:
   database: todo-ajax-rails_development
 
 test:
-  <<: *default
-  database: todo-ajax-rails_test
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 production:
   <<: *default
-  database: todo-ajax-rails_production
-  username: todo-ajax-rails
-  password: <%= ENV['TODO-AJAX-RAILS_DATABASE_PASSWORD'] %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV['DATABASE_URL'] %>

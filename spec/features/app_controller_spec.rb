@@ -40,7 +40,7 @@ RSpec.feature 'Root path', type: :feature do
     expect(page).to have_selector('table', id: 'todos_datatable')
   end
 
-  scenario "Visitor add new todo", js: true do
+  scenario 'Visitor add new todo', js: true do
     login_as(user)
     visit root_path
     click_link 'Nova Tarefa'
