@@ -44,6 +44,9 @@ jobs:
           ruby-version: 2.5.9
           bundler-cache: true
 
+      - name: Print RAILS_MASTER_KEY
+        run: echo $RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+
       - name: Install dependencies
         run: |
           bundle config path vendor/bundle
