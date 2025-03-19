@@ -33,7 +33,7 @@ jobs:
       RAILS_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/todo_test
       REDIS_URL: redis://localhost:6379/1
-      RAILS_MASTER_KEY: 22cc49ff3cb18a78f493f6dd8ca2acbf
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
       - uses: actions/checkout@v2
