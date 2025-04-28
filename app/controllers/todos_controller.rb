@@ -11,6 +11,11 @@ class TodosController < ApplicationController
   # GET /todos or /todos.json
   def index
     @todos = TodoService.call(params, current_user)
+
+    respond_to do |format|
+      format.js { render 'todos/js/index' }
+      format.json { render json: @todos, each_serializer: TodoSerializer, status: :ok }
+    end
   end
 
   def datatable
@@ -21,27 +26,41 @@ class TodosController < ApplicationController
 
   def more
     respond_to do |format|
-      format.js
+      format.js { render 'todos/js/more' }
     end
   end
 
   # GET /todos/1 or /todos/1.json
-  def show; end
+  def show
+    respond_to do |format|
+      format.js { render 'todos/js/show' }
+      format.json { render json: @todo, serializer: TodoSerializer, status: :ok }
+    end
+  end
 
   # GET /todos/new
   def new
     @todo = current_user.todos.build
+
+    respond_to do |format|
+      format.js { render 'todos/js/new' }
+    end
   end
 
   # GET /todos/1/edit
-  def edit; end
+  def edit
+    respond_to do |format|
+      format.js { render 'todos/js/edit' }
+    end
+  end
 
   # POST /todos or /todos.json
   def create
     @todo.save
 
     respond_to do |format|
-      format.js
+      format.js { render 'todos/js/create' }
+      format.json { render json: @todo, serializer: TodoSerializer, status: :ok }
     end
   end
 
@@ -50,14 +69,15 @@ class TodosController < ApplicationController
     @todo.update(todo_params)
 
     respond_to do |format|
-      format.js
+      format.js { render 'todos/js/update' }
+      format.json { render json: @todo, serializer: TodoSerializer, status: :ok }
     end
   end
 
   # GET /todos/1/confirm_delete
   def confirm_delete
     respond_to do |format|
-      format.js
+      format.js { render 'todos/js/confirm_delete' }
     end
   end
 
@@ -66,13 +86,13 @@ class TodosController < ApplicationController
     @todo.destroy
 
     respond_to do |format|
-      format.js
+      format.js { render 'todos/js/destroy' }
     end
   end
 
   def inline
     respond_to do |format|
-      format.js
+      format.js { render 'todos/js/inline' }
     end
   end
 
