@@ -13,11 +13,11 @@ development:
 
 test:
   <<: *default
-  database: todo-ajax-rails_test
-  # adapter: postgresql
-  # encoding: unicode
-  # pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  # url: <%= ENV['DATABASE_URL'] %>
+  # database: todo-ajax-rails_test
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 production:
   <<: *default
