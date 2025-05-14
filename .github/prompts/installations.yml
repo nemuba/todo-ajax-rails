@@ -1,0 +1,75 @@
+# Install Ruby
+
+* Verifique a versão do ruby no arquivo Gemfile ou .ruby-version
+* Instale a versão do ruby especificada no arquivo Gemfile ou .ruby-version
+* Verifique se o rvm está instalado
+* Se não estiver instalado, instale o rvm
+  * comando: \curl -sSL https://get.rvm.io | bash -s stable
+* Verifique se o rvm está carregado
+* Se não estiver carregado, carregue o rvm
+  * comando: source ~/.rvm/scripts/rvm
+* Verifique se o ruby está instalado
+* Instale o Ruby usando o rvm
+  * comando: rvm install ${Gemfile_ruby_version}
+
+# Install Bundler
+
+* Verifique se o bundler está instalado
+* Se não estiver instalado, instale o bundler
+* Verifique a versão do bundler
+* Se a versão do bundler não for a especificada no arquivo Gemfile.lock, instale a versão correta
+  * comando: gem install bundler -v ${Gemfile_lock_bundler_version}
+
+# Install Postgres
+
+* Verifique se o postgres está instalado
+* Se não estiver instalado, instale o postgres
+  * comando: sudo apt-get install postgresql postgresql-contrib libpq-dev
+* Verifique se o postgres está rodando
+* Se não estiver rodando, inicie o postgres
+  * comando: 
+    - sudo service postgresql start
+    - sudo adduser --disabled-password --gecos "" postgres && sudo service postgresql start
+    - sudo pg_createcluster 12 main --start && sudo service postgresql start
+    - sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'admin';"
+* Verifique se o postgres está rodando na porta 5432
+  * comando: sudo netstat -plnt | grep 5432
+* Teste a conexão com o postgres
+  * comando: PGPASSWORD=admin psql -U postgres -h localhost -c '\conninfo'
+
+# Install Redis
+
+* Verifique se o redis está instalado
+* Se não estiver instalado, instale o redis
+  * comando: sudo apt-get install redis-server
+* Verifique se o redis está rodando
+* Se não estiver rodando, inicie o redis
+  * comando: sudo service redis-server start
+* Verifique se o redis está rodando na porta 6379
+  * comando: sudo netstat -plnt | grep 6379
+* Teste a conexão com o redis
+  * comando: redis-cli ping
+* Se a resposta for "PONG", o redis está funcionando corretamente
+
+# Install yarn
+
+* Verifique se o yarn está instalado
+* Se não estiver instalado, instale o yarn
+  * comando: npm install --global yarn
+* Verifique a versão do yarn
+  * comando: yarn --version
+
+
+# Setup project
+
+* Instale as dependências do projeto
+  * comando: bundle install && rails assets:precompile
+* Crie o banco de dados
+  * comando: rails db:create
+* Execute as migrações
+  * comando: rails db:migrate
+* Verifique se o banco de dados foi criado corretamente
+  * comando: PGPASSWORD=admin psql -U postgres -h localhost -l
+* Verifique se o banco de dados foi criado corretamente
+  * comando: PGPASSWORD=admin psql -U postgres -h localhost -d todo-ajax-rails_development -c '\dt'
+  

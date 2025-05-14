@@ -1,0 +1,17 @@
+# Steps to run the project
+
+# Install dependencies
+
+* Comando: bundle install && yarn install
+
+# Start Redis
+
+* Comando: sudo service redis-server start
+
+# Start PostgreSQL
+
+* Comando: sudo service postgresql start
+
+# Start project
+
+* Comando: rails db:setup && rails s -b 0.0.0.0 -p 3000
