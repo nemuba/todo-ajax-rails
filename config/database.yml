@@ -2,6 +2,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :database) %>
   host: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :host) %>
   port: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :port) %>
   username: <%= Rails.application.credentials.dig(Rails.env.to_sym, :pg, :username) %>
@@ -9,19 +10,10 @@ default: &default
 
 development:
   <<: *default
-  database: todo-ajax-rails_development
 
 test:
   <<: *default
-  # database: todo-ajax-rails_test
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  url: <%= ENV['DATABASE_URL'] %>
 
 production:
   <<: *default
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   url: <%= ENV['DATABASE_URL'] %>
