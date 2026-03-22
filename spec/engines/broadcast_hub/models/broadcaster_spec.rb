@@ -43,8 +43,11 @@ RSpec.describe 'BroadcastHub::Broadcaster' do
     end)
   end
 
-  after do
-    BroadcastHub.configuration.stream_key_resolver = nil
+  around do |example|
+    original_stream_key_resolver = BroadcastHub.configuration.stream_key_resolver
+    example.run
+  ensure
+    BroadcastHub.configuration.stream_key_resolver = original_stream_key_resolver
   end
 
   it 'registers lifecycle callbacks through broadcast_to' do
