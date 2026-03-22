@@ -22,6 +22,7 @@ AllCops:
     - 'lib/**/*'
     - 'vendor/**/*'
     - 'spec/**/*'
+    - 'engines/**/*'
 
 Style/Documentation:
   Enabled: false

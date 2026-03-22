@@ -54,7 +54,7 @@ RSpec.describe TodosController, type: :controller do
         post :create,
              params: { todo: attributes_for(:todo, user_id: user.id) },
              format: :js
-      end.to have_broadcasted_to("resource:todo:user:#{user.id}").from_channel(TodoChannel)
+      end.to have_broadcasted_to("resource:todo:user:#{user.id}").from_channel(BroadcastHub::StreamChannel)
     end
   end
 
@@ -93,7 +93,7 @@ RSpec.describe TodosController, type: :controller do
         delete :destroy,
                params: { id: todo.id },
                format: :js
-      end.to have_broadcasted_to("resource:todo:user:#{user.id}").from_channel(TodoChannel)
+      end.to have_broadcasted_to("resource:todo:user:#{user.id}").from_channel(BroadcastHub::StreamChannel)
     end
   end
 

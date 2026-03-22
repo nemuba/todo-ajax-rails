@@ -23,10 +23,6 @@ RSpec.describe Todo, type: :model do
   end
 
   describe 'includes' do
-    describe 'legacy Broadcaster concern' do
-      it { expect(Todo.included_modules).not_to include(Broadcaster) }
-    end
-
     describe 'BroadcastHub::Broadcaster' do
       it { expect(Todo.included_modules).to include(BroadcastHub::Broadcaster) }
       it { expect(Todo).to respond_to(:broadcast_to) }
