@@ -16,7 +16,7 @@ RSpec.describe BroadcastHub::Generators::InstallGenerator do
     FileUtils.rm_rf(destination_root)
   end
 
-  it 'generates initializer with resolver context examples' do
+  it 'generates initializer with resolver, authorization, and resource scaffolding' do
     Rails::Generators.invoke(
       'broadcast_hub:install',
       [],
@@ -27,7 +27,12 @@ RSpec.describe BroadcastHub::Generators::InstallGenerator do
 
     content = File.read(initializer_path)
 
+    expect(content).to include('config.allowed_resources')
+    expect(content).to include('config.authorize_scope')
     expect(content).to include('config.stream_key_resolver')
+    expect(content).to include('"resource:#{context.resource_name}"')
+    expect(content).to include('Auth mode example')
+    expect(content).to include('No-auth mode example')
     expect(content).to include('current_user')
     expect(content).to include('session_id')
     expect(content).to include('ApplicationCable::Connection')

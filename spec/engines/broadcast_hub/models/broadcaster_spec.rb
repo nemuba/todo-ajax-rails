@@ -55,8 +55,27 @@ RSpec.describe 'BroadcastHub::Broadcaster' do
     todo = test_todo_class.new(id: 1, title: 'A')
 
     expect(todo).to respond_to(:broadcast_append)
+    expect(todo).to respond_to(:broadcast_prepend)
     expect(todo).to respond_to(:broadcast_update)
     expect(todo).to respond_to(:broadcast_remove)
+  end
+
+  it 'broadcasts prepend payloads' do
+    BroadcastHub.configure do |config|
+      config.stream_key_resolver = ->(_context) { 'tenant:t1:todo:user:1' }
+    end
+
+    renderer = instance_double(BroadcastHub::Renderer, render: "<li id='todo_1'>A</li>")
+    allow(BroadcastHub::Renderer).to receive(:new).and_return(renderer)
+
+    todo = test_todo_class.new(id: 1, title: 'A')
+
+    expect(ActionCable.server).to receive(:broadcast).with(
+      'tenant:t1:todo:user:1',
+      hash_including(action: 'prepend', target: '#todos', content: "<li id='todo_1'>A</li>")
+    )
+
+    todo.broadcast_prepend('#todos')
   end
 
   it 'broadcasts append using configured stream key resolver context' do

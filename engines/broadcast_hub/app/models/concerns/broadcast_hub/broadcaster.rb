@@ -8,6 +8,10 @@ module BroadcastHub
       broadcast_action('append', target)
     end
 
+    def broadcast_prepend(target)
+      broadcast_action('prepend', target)
+    end
+
     def broadcast_update(target)
       broadcast_action('update', target)
     end
