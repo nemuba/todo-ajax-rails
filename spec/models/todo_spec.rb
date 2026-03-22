@@ -23,16 +23,16 @@ RSpec.describe Todo, type: :model do
   end
 
   describe 'includes' do
-    describe 'Broadcaster' do
-      it { expect(Todo.included_modules).to include(Broadcaster) }
+    describe 'BroadcastHub::Broadcaster' do
+      it { expect(Todo.included_modules).to include(BroadcastHub::Broadcaster) }
       it { expect(Todo).to respond_to(:broadcast_to) }
 
       describe 'methods' do
-        it { should respond_to(:turbo_stream_append) }
-        it { should respond_to(:turbo_stream_prepend) }
-        it { should respond_to(:turbo_stream_replace) }
-        it { should respond_to(:turbo_stream_remove) }
-        it { should respond_to(:turbo_stream_inline) }
+        let(:todo) { described_class.new }
+
+        it { expect(todo).to respond_to(:broadcast_append) }
+        it { expect(todo).to respond_to(:broadcast_update) }
+        it { expect(todo).to respond_to(:broadcast_remove) }
       end
     end
   end

@@ -2,7 +2,7 @@
 
 # Todo
 class Todo < ApplicationRecord
-  include Broadcaster
+  include BroadcastHub::Broadcaster
 
   belongs_to :user
 
@@ -13,8 +13,19 @@ class Todo < ApplicationRecord
   validates :title, :description, presence: true
   validates :status, presence: true, inclusion: { in: statuses.keys }
 
-  broadcast_to :todos
+  broadcast_to :todo, partial: 'todos/partials/todo', target: '#todos'
 
   scope :search, ->(column, term) { where("#{column} ILIKE ?", "%#{term}%") }
   scope :order_by, ->(column, direction) { order("#{column} #{direction}") }
+
+  private
+
+  def broadcast_hub_stream_key_context_attributes
+    {
+      tenant_id: nil,
+      current_user: user,
+      session_id: nil,
+      params: {}
+    }
+  end
 end
