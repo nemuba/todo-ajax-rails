@@ -108,6 +108,7 @@ GEM
     ffi (1.16.3)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
+    foreman (0.87.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.14.4)
@@ -323,6 +324,7 @@ DEPENDENCIES
   factory_bot_rails (= 5.2.0)
   faker
   font-awesome-rails
+  foreman
   jasmine-core (= 3.10.1)
   jasmine-rails (~> 0.15.0)
   jbuilder (~> 2.5)

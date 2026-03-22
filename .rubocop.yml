@@ -21,6 +21,7 @@ AllCops:
     - 'db/**/*'
     - 'lib/**/*'
     - 'vendor/**/*'
+    - 'spec/**/*'
 
 Style/Documentation:
   Enabled: false
