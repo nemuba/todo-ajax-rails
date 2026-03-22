@@ -46,8 +46,6 @@ end
 group :test do
   gem 'action-cable-testing'
   gem 'capybara'
-  gem 'jasmine-core', '3.10.1'
-  gem 'jasmine-rails', '~> 0.15.0'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'webdrivers'
