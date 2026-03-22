@@ -27,14 +27,14 @@ RSpec.feature 'Todo table regressions', type: :feature, js: true do
     find('#todo_status').find("option[value='pending']").select_option
     find('#todo input[type="submit"]').click
 
-    expect(page).to have_css('#todos tr[id^="todo-"]', count: 1, wait: 10)
-    created_id = page.evaluate_script(%q(document.querySelector('#todos tr[id^="todo-"]').id.replace('todo-', '')))
+    expect(page).to have_css('#todos tr[id^="todo_"]', count: 1, wait: 10)
+    created_id = page.evaluate_script(%q(document.querySelector('#todos tr[id^="todo_"]').id.replace('todo_', '')))
     expect(page).to have_css('#todos-total', text: 'Total de registros: 1', wait: 10)
     expect(page).to have_no_css('#empty_rows', visible: :visible, wait: 10)
 
     page.execute_script("if ($('#empty_rows').length === 0) { $('#todos').append('<tr id=\"empty_rows\" style=\"display:none;\"><td>nenhum registro</td></tr>'); }")
 
-    within("#todo-#{created_id}") do
+    within("#todo_#{created_id}") do
       click_button 'Ações'
       click_link 'Excluir'
     end
@@ -46,7 +46,7 @@ RSpec.feature 'Todo table regressions', type: :feature, js: true do
     expect(page).to have_css('#todo-modal form[action^="/todos/"]', wait: 10)
     find('#todo-modal input[type="submit"]').click
 
-    expect(page).to have_no_css("#todo-#{created_id}", wait: 10)
+    expect(page).to have_no_css("#todo_#{created_id}", wait: 10)
     expect(page).to have_css('#todos-total', text: 'Total de registros: 0', wait: 10)
     expect(page).to have_css('#empty_rows', text: 'nenhum registro', visible: :all, wait: 10)
   end
@@ -58,7 +58,7 @@ RSpec.feature 'Todo table regressions', type: :feature, js: true do
     visit root_path
 
     wait_for_datatable
-    expect(page).to have_css("#todo-#{todo.id}", wait: 10)
+    expect(page).to have_css("#todo_#{todo.id}", wait: 10)
 
     expect(page).to have_css('#todos-total', text: 'Total de registros: 1', wait: 10)
 

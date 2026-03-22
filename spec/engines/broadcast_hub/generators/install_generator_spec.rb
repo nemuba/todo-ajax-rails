@@ -6,10 +6,13 @@ require Rails.root.join('engines/broadcast_hub/lib/generators/broadcast_hub/inst
 RSpec.describe BroadcastHub::Generators::InstallGenerator do
   let(:destination_root) { Rails.root.join('tmp/generator_specs/broadcast_hub_install').to_s }
   let(:initializer_path) { File.join(destination_root, 'config/initializers/broadcast_hub.rb') }
+  let(:application_js_path) { File.join(destination_root, 'app/assets/javascripts/application.js') }
 
   before do
     FileUtils.rm_rf(destination_root)
     FileUtils.mkdir_p(destination_root)
+    FileUtils.mkdir_p(File.dirname(application_js_path))
+    File.write(application_js_path, "//= require rails-ujs\n")
   end
 
   after do
@@ -17,11 +20,13 @@ RSpec.describe BroadcastHub::Generators::InstallGenerator do
   end
 
   it 'generates initializer with resolver, authorization, and resource scaffolding' do
-    Rails::Generators.invoke(
-      'broadcast_hub:install',
-      [],
-      destination_root: destination_root
-    )
+    expect do
+      Rails::Generators.invoke(
+        'broadcast_hub:install',
+        [],
+        destination_root: destination_root
+      )
+    end.to output(%r{app/assets/javascripts/application\.js.*//= require broadcast_hub/index}m).to_stdout
 
     expect(File).to exist(initializer_path)
 
@@ -36,5 +41,10 @@ RSpec.describe BroadcastHub::Generators::InstallGenerator do
     expect(content).to include('current_user')
     expect(content).to include('session_id')
     expect(content).to include('ApplicationCable::Connection')
+
+    application_js_content = File.read(application_js_path)
+
+    expect(application_js_content).to include('//= require jquery3')
+    expect(application_js_content).to include('//= require broadcast_hub/index')
   end
 end
