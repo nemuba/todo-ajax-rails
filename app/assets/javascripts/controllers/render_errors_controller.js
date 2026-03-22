@@ -10,6 +10,8 @@ class RenderErrors {
     this.fields = args.fields;
     this.errors = args.errors;
     this.renderHTML = args.render;
+    this.fieldDomPrefix = args.fieldDomPrefix || this._inferFieldDomPrefix(args.form);
+    this.inputSelector = args.inputSelector;
     this.init();
   }
 
@@ -18,8 +20,7 @@ class RenderErrors {
    * @public
    */
   init() {
-    const normalizeErrors = this.errors.replace(/&quot;/g, '"');
-    this.list = JSON.parse(normalizeErrors);
+    this.list = this._normalizeErrorsList(this.errors);
   }
 
   /**
@@ -29,39 +30,45 @@ class RenderErrors {
   render() {
     $(this.errorContainer).html(this.renderHTML);
 
-    this.#formFocus();
+    this._formFocus();
   }
 
   /**
    * Sets focus on the first field with an error and adds error classes to the corresponding fields.
    * @private
    */
-  #formFocus() {
+  _formFocus() {
     // Add focus to the first field with an error
-    this.#focusFieldError();
+    this._focusFieldError();
 
     // Remove class of error from all list
-    this.#removeInvalidClass();
+    this._removeInvalidClass();
 
     // Add class of error to list with errors
-    this.#addInvalidClass();
+    this._addInvalidClass();
   }
 
   /**
    * Sets focus on the first field with an error.
    * @private
    */
-  #focusFieldError() {
-    $(`${this.form}`).find(`#todo_${this.list.at(0)}`).focus();
+  _focusFieldError() {
+    const firstField = this.list.at(0);
+
+    if (!firstField) {
+      return;
+    }
+
+    this._findField(firstField).focus();
   }
 
   /**
    * Removes the class of error from all fields.
    * @private
    */
-  #removeInvalidClass() {
+  _removeInvalidClass() {
     this.fields.forEach((field) => {
-      $(`${this.form} #todo_${field}`).removeClass('is-invalid');
+      this._findField(field).removeClass('is-invalid');
     });
   }
 
@@ -69,10 +76,77 @@ class RenderErrors {
    * Adds the class of error to
    * @private
    */
-  #addInvalidClass() {
+  _addInvalidClass() {
     this.list.forEach((field) => {
-      $(`${this.form} #todo_${field}`).addClass('is-invalid');
+      this._findField(field).addClass('is-invalid');
     });
   }
-}
 
+  _findField(field) {
+    return $(`${this.form}`).find(this._resolveFieldSelector(field));
+  }
+
+  _resolveFieldSelector(field) {
+    if (typeof this.inputSelector === 'function') {
+      return this.inputSelector(field);
+    }
+
+    return `#${this.fieldDomPrefix}_${field}`;
+  }
+
+  _inferFieldDomPrefix(formSelector) {
+    const elementId = $(formSelector).attr('id');
+
+    if (elementId && elementId.length > 0) {
+      return elementId;
+    }
+
+    return 'resource';
+  }
+
+  _normalizeErrorsList(errors) {
+    if (Array.isArray(errors)) {
+      return errors.map((field) => String(field).trim()).filter((field) => field.length > 0);
+    }
+
+    if (errors == null) {
+      return [];
+    }
+
+    const normalized = String(errors).replace(/&quot;/g, '"').trim();
+
+    if (normalized.length === 0) {
+      return [];
+    }
+
+    if (normalized.startsWith('[') || normalized.startsWith('{')) {
+      try {
+        const parsed = JSON.parse(normalized);
+
+        if (Array.isArray(parsed)) {
+          return parsed.map((field) => String(field).trim()).filter((field) => field.length > 0);
+        }
+
+        if (parsed && typeof parsed === 'object') {
+          return Object.keys(parsed);
+        }
+      } catch (_error) {
+        if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+          console.warn('[RenderErrors] Failed to parse errors payload. Falling back to empty error list.');
+        }
+
+        return [];
+      }
+    }
+
+    if (normalized.includes(',')) {
+      return normalized
+        .split(',')
+        .map((field) => field.replace(/[\[\]"]/g, '').trim())
+        .filter((field) => field.length > 0);
+    }
+
+    const singleField = normalized.replace(/[\[\]"]/g, '').trim();
+    return singleField.length > 0 ? [singleField] : [];
+  }
+}
