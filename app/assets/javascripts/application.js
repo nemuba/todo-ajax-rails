@@ -16,7 +16,7 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
+//= require broadcast_hub/index
 //= require_tree ./components
 //= require_tree ./controllers
 //= require_tree .
-

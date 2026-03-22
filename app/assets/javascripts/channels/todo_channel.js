@@ -1,36 +1,15 @@
-App.todo_channel = App.cable.subscriptions.create("TodoChannel", {
-  connected: function () {
-    console.log('TodoChannel connected');
-  },
+(function (global) {
+  function wireTodoChannel(consumer, $) {
+    var controller = new BroadcastHubJQueryController($);
+    var subscription = new BroadcastHubSubscription(consumer, controller);
 
-  disconnected: function () {
-    console.log('TodoChannel disconnected');
-  },
+    return subscription.subscribe('todo');
+  }
 
-  received: function ({ action, target, content, id, field }) {
-    const stream = new Todo(target);
-    switch (action) {
-      case 'append' || 'prepend':
-        stream[action](content);
-        break;
-      case 'update':
-        stream[action](id, content)
-        break;
-      case 'remove':
-        stream[action](id);
-        break;
-      case 'inline':
-        stream.renderInline(id, field, content);
-        break;
-    }
-  },
-  append: function (id) {
-    this.perform('append', { id: id, target: 'todos' });
-  },
-  prepend: function (id) {
-    this.perform('prepend', { id: id, target: 'todos' });
-  },
-  update: function (id) {
-    this.perform('update', { id: id, target: 'todos' });
-  },
-});
+  global.TodoChannel = global.TodoChannel || {};
+  global.TodoChannel.wire = wireTodoChannel;
+
+  if (global.App && global.App.cable && global.jQuery) {
+    global.App.todo_channel = wireTodoChannel(global.App.cable, global.jQuery);
+  }
+})(this);
