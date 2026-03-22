@@ -1,0 +1,19 @@
+BroadcastHub.configure do |config|
+  # Configure stream identity for channel subscriptions.
+  #
+  # Example context fields available to the resolver:
+  # - context.current_user
+  # - context.session_id
+  # - context.tenant_id
+  # - context.resource_name
+  config.stream_key_resolver = lambda do |context|
+    if context.current_user
+      "tenant:#{context.tenant_id}:#{context.resource_name}:user:#{context.current_user.id}"
+    else
+      "tenant:#{context.tenant_id}:#{context.resource_name}:session:#{context.session_id}"
+    end
+  end
+end
+
+# For apps without `current_user` in Action Cable, expose safe connection
+# identifiers in ApplicationCable::Connection and map them in the resolver.
