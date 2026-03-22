@@ -8,5 +8,7 @@ RSpec.describe BroadcastHub::Configuration do
 
     expect(config.payload_version).to eq(1)
     expect(config.update_strategy).to eq(:replace_with)
+    expect(config.allowed_resources).to eq([])
+    expect(config.authorize_scope).to be_nil
   end
 end
