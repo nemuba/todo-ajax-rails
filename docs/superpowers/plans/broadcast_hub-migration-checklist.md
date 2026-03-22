@@ -1,10 +1,17 @@
 # BroadcastHub Migration Checklist
 
-- [ ] Install the BroadcastHub engine and run the initializer generator.
-- [ ] Configure `allowed_resources`, `authorize_scope`, and `stream_key_resolver` in the initializer.
-- [ ] Migrate one resource first and validate `create`, `update`, and `destroy` payloads end-to-end.
-- [ ] Validate rejection paths for `missing resource` and `unauthorized tenant` subscriptions.
-- [ ] Validate cross-tenant broadcast isolation (tenant A cannot receive tenant B events).
-- [ ] Validate no-auth mode using a session-based resolver path.
-- [ ] Validate there is no runtime dependency on `turbo-rails` for BroadcastHub payload flow.
-- [ ] Roll out remaining resources incrementally after the first migration succeeds.
+## Task 6 - App migration completion state
+
+- [x] Todo broadcasting migrated to `BroadcastHub::Broadcaster`.
+- [x] Legacy `Broadcaster` runtime usage disabled.
+- [x] Generic `BroadcastHub::StreamChannel` contract validated.
+- [x] JavaScript subscription wiring switched to BroadcastHub.
+
+## Deferred cleanup policy
+
+- [x] Legacy `Broadcaster` files are retained temporarily for migration traceability and safe rollback.
+- [ ] Remove retained legacy broadcaster files in a dedicated follow-up cleanup task after migration stability window.
+
+## Final verification used
+
+- [x] `bundle exec rspec spec/engines/broadcast_hub spec/models spec/controllers spec/channels spec/javascripts/jasmine_runner_spec.rb`
