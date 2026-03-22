@@ -14,54 +14,6 @@ class ResourceTableController {
     };
   }
 
-  append(rowHtml) {
-    $(this.target).append(rowHtml).fadeIn();
-    $(this.config.selectors.emptyRows).hide();
-    this.updateTotal();
-  }
-
-  prepend(rowHtml) {
-    $(this.target).prepend(rowHtml).fadeIn();
-    $(this.config.selectors.emptyRows).hide();
-    this.updateTotal();
-  }
-
-  update(id, rowHtml) {
-    const rowSelector = `#${this.config.resourceName}-${id}`;
-    const $currentRow = $(this.target).find(rowSelector);
-    const $nextRow = $(rowHtml).hide();
-
-    if ($currentRow.length > 0) {
-      $currentRow.replaceWith($nextRow);
-      $nextRow.fadeIn();
-    }
-
-    $(this.config.selectors.emptyRows).hide();
-    this.updateTotal();
-  }
-
-  remove(id) {
-    const rowSelector = `#${this.config.resourceName}-${id}`;
-    const $row = $(this.target).find(rowSelector);
-
-    if ($row.length === 0) {
-      this.updateTotal();
-      return;
-    }
-
-    $row.fadeOut(() => {
-      $row.remove();
-
-      if (this.rows() === 0) {
-        $(this.config.selectors.emptyRows).show();
-      } else {
-        $(this.config.selectors.emptyRows).hide();
-      }
-
-      this.updateTotal();
-    });
-  }
-
   rows() {
     return $(this.target).find(this.config.rowSelector).length;
   }
@@ -79,7 +31,7 @@ class ResourceTableController {
   }
 
   renderInline(id, field, formHtml) {
-    $(`${this.target} #${this.config.resourceName}-${id}`)
+    $(`${this.target} #${this.config.resourceName}_${id}`)
       .find(`#${this.config.resourceName}-${field}-${id}`)
       .html(formHtml);
   }
@@ -109,7 +61,7 @@ class ResourceTableController {
   }
 
   renderMore(id, moreHtml) {
-    $(moreHtml).insertAfter(`#${this.config.resourceName}-${id}`);
+    $(moreHtml).insertAfter(`#${this.config.resourceName}_${id}`);
   }
 
   toggleMore(id, url) {
@@ -152,13 +104,13 @@ class ResourceTableController {
     }
 
     const selectors = this._normalizeSelectors(config.selectors);
-    const rowPrefix = `${config.resourceName}-`;
+    const rowPrefix = `${config.resourceName}_`;
 
     return {
       resourceName: config.resourceName,
       fields: config.fields,
       selectors,
-      rowSelector: config.rowSelector || `tr[id^="${config.resourceName}-"]`,
+      rowSelector: config.rowSelector || `tr[id^="${config.resourceName}_"]`,
       messages: {
         total: (config.messages && config.messages.total) || 'Total de registros: %{count}'
       },

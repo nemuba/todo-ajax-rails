@@ -30,7 +30,7 @@ class Todo extends ResourceTableController {
         total: 'Total de registros: %{count}'
       },
       more: {
-        rowPrefix: 'todo-',
+        rowPrefix: 'todo_',
         morePrefix: 'more-todo-',
         buttonPrefix: 'btn-more-todo-'
       }
