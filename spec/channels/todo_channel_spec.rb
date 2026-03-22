@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe TodoChannel, type: :channel do
   let(:current_user) { create(:user) }
+  let(:stream_key) { "resource:todo:user:#{current_user.id}" }
 
   context 'current_user is present' do
     before do
@@ -19,7 +20,9 @@ RSpec.describe TodoChannel, type: :channel do
     it 'broadcasts to the stream append' do
       subscribe
       todo = create(:todo, user: current_user)
-      expect { perform :append, id: todo.id, target: 'todos' }.to have_broadcasted_to("todo_channel_#{current_user.id}")
+      expect { perform :append, id: todo.id, target: 'todos' }
+        .to have_broadcasted_to(stream_key)
+        .with(hash_including(action: 'append', target: 'todos'))
     end
 
     it 'broadcasts to the stream prepend' do
@@ -27,13 +30,16 @@ RSpec.describe TodoChannel, type: :channel do
       todo = create(:todo, user: current_user)
       expect do
         perform :prepend, id: todo.id, target: 'todos'
-      end.to have_broadcasted_to("todo_channel_#{current_user.id}")
+      end.to have_broadcasted_to(stream_key)
+        .with(hash_including(action: 'prepend', target: 'todos'))
     end
 
     it 'broadcasts to the stream update' do
       subscribe
       todo = create(:todo, user: current_user)
-      expect { perform :update, id: todo.id, target: 'todos' }.to have_broadcasted_to("todo_channel_#{current_user.id}")
+      expect { perform :update, id: todo.id, target: 'todos' }
+        .to have_broadcasted_to(stream_key)
+        .with(hash_including(action: 'update', target: 'todos'))
     end
   end
 end
