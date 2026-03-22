@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 module BroadcastHub
+  # Validates subscription context and resolves an Action Cable stream key.
   class StreamKeyResolver
+    # Raised when the context cannot subscribe to the requested resource.
     class Unauthorized < StandardError; end
 
     class << self
+      # Resolves the stream key for a subscription context.
+      #
+      # @param context [BroadcastHub::StreamKeyContext] normalized subscription context
+      # @return [String] stream identifier used by Action Cable
+      # @raise [Unauthorized] when the context is invalid or not authorized
       def resolve!(context)
         reject!('missing_resource') if context.resource_name.to_s.strip.empty?
 
@@ -26,10 +33,13 @@ module BroadcastHub
 
       private
 
+      # @return [BroadcastHub::Configuration]
       def configuration
         BroadcastHub.configuration
       end
 
+      # @param reason [String] symbolic rejection reason
+      # @raise [Unauthorized]
       def reject!(reason)
         raise Unauthorized, reason
       end

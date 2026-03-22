@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'broadcast_hub/version'
 require 'broadcast_hub/configuration'
 require 'broadcast_hub/engine'

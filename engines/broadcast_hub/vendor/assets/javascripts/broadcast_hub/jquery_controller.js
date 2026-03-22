@@ -37,10 +37,11 @@
         }
         return;
       case 'remove':
-        if ($byId.length > 0) {
-          $byId.remove();
-        } else {
-          $target.remove();
+        if (id) {
+          var $withinTarget = $target.filter('#' + id).add($target.find('#' + id)).first();
+          if ($withinTarget.length > 0) {
+            $withinTarget.remove();
+          }
         }
         return;
       default:

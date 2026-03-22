@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BroadcastHub
   class Configuration
     attr_accessor :payload_version,
