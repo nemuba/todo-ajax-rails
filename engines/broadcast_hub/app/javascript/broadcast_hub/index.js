@@ -4,8 +4,12 @@ import BroadcastHubSubscription from './subscription';
 const root = typeof window !== 'undefined' ? window : globalThis;
 
 if (root) {
-  root.BroadcastHubJQueryController = root.BroadcastHubJQueryController || BroadcastHubJQueryController;
-  root.BroadcastHubSubscription = root.BroadcastHubSubscription || BroadcastHubSubscription;
+  root.BroadcastHubJQueryController = BroadcastHubJQueryController;
+  root.BroadcastHubSubscription = BroadcastHubSubscription;
+
+  root.BroadcastHub = root.BroadcastHub || {};
+  root.BroadcastHub.JQueryController = root.BroadcastHubJQueryController;
+  root.BroadcastHub.Subscription = root.BroadcastHubSubscription;
 }
 
 export { BroadcastHubJQueryController, BroadcastHubSubscription };
