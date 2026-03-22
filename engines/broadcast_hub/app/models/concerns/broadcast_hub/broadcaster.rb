@@ -54,15 +54,31 @@ module BroadcastHub
       resolver = BroadcastHub.configuration.stream_key_resolver
       raise 'stream_key_resolver not configured' unless resolver
 
+      context_attributes = {
+        tenant_id: nil,
+        current_user: nil,
+        session_id: nil,
+        params: {}
+      }.merge((broadcast_hub_stream_key_context_attributes || {}).to_h)
+
       resolver.call(
         BroadcastHub::StreamKeyContext.new(
           resource_name: broadcast_hub_resource_name,
-          tenant_id: nil,
-          current_user: (respond_to?(:user) ? user : nil),
-          session_id: nil,
-          params: {}
+          tenant_id: context_attributes[:tenant_id],
+          current_user: context_attributes[:current_user],
+          session_id: context_attributes[:session_id],
+          params: context_attributes[:params]
         )
       )
+    end
+
+    def broadcast_hub_stream_key_context_attributes
+      {
+        tenant_id: nil,
+        current_user: nil,
+        session_id: nil,
+        params: {}
+      }
     end
 
     def broadcast_hub_dom_id
