@@ -12,6 +12,7 @@ Scope: Rails mountable engine (gem) to extract broadcaster + Action Cable + jQue
 - Provide frontend JS support for both Sprockets (default) and Webpacker (optional).
 - Keep payload format server-rendered HTML so client only applies DOM operations.
 - Support apps with and without authentication through flexible stream-key resolution.
+- Keep engine APIs framework-neutral for Rails 5.2 baseline (no hard dependency on Turbo APIs).
 
 ## 2. Non-Goals
 
@@ -68,9 +69,17 @@ end
 ### 5.3 Security Rules
 
 - Never trust raw stream keys from client input.
+- Never derive `tenant_id` or `resource_name` from untrusted params without allowlisting.
+- Always authorize requested tenant/resource scope against connection identity.
 - Resolve stream keys server-side only.
 - Reject subscription when resolver cannot safely produce a key.
 - Keep publisher and subscriber using the exact same resolver strategy.
+
+### 5.4 Action Cable Context Requirements
+
+- If auth is available, resolver may use `current_user`.
+- If auth is not available, resolver may use a signed/verified session identity.
+- `session_id` is not assumed by default in Cable context; the engine installer documents how to expose a safe session token in `ApplicationCable::Connection`.
 
 ## 6. Broadcast Payload Contract
 
@@ -78,6 +87,7 @@ Canonical payload:
 
 ```json
 {
+  "version": 1,
   "action": "append|prepend|update|remove",
   "target": "todos",
   "content": "<li id='todo_42'>...</li>",
@@ -96,6 +106,30 @@ Notes:
 - `remove` may omit `content`.
 - `id` is used when target specificity is needed for update/remove.
 
+Field contract:
+
+| Field | Type | Required | Rules |
+| --- | --- | --- | --- |
+| `version` | Integer | Yes | Starts at `1`; must be present for forward compatibility. |
+| `action` | String | Yes | One of: `append`, `prepend`, `update`, `remove`. |
+| `target` | String | Yes | DOM target key/selector agreed by host app. |
+| `content` | String (HTML) | Conditional | Required for `append`, `prepend`, `update`; optional for `remove`. Recommended max payload size: 64KB. |
+| `id` | String | Conditional | Optional globally; strongly recommended for `update`/`remove` targeting. |
+| `meta` | Object | No | Non-authoritative diagnostics/context only. |
+
+Action semantics:
+
+- `append`: add `content` to end of `target` container.
+- `prepend`: add `content` to beginning of `target` container.
+- `update`: if `id` exists update by `id`, else update `target`.
+- `remove`: if `id` exists remove by `id`, else remove `target` element.
+
+HTML safety rule:
+
+- `content` must come from trusted server rendering paths.
+- User-supplied values must be escaped/sanitized by server templates.
+- Client must never inject arbitrary external HTML through this pipeline.
+
 ## 7. End-to-End Flow
 
 1. Model callback fires (`after_create_commit`, `after_update_commit`, `after_destroy_commit`).
@@ -104,7 +138,13 @@ Notes:
 4. Stream key is resolved via configured resolver.
 5. Engine broadcasts through Action Cable to generic stream channel.
 6. JS subscriber receives payload and forwards to jQuery controller.
-7. jQuery controller applies DOM operation on `target`.
+7. jQuery controller applies DOM operation using `id` first (for `update`/`remove` when present), then `target` fallback.
+
+Terminology mapping:
+
+- `resource_name`: logical domain identifier for stream partitioning (`todo`, `order`).
+- `target`: DOM insertion/update/removal destination (`#todos`, `[data-list='todos']`).
+- `id`: optional item-level DOM identifier (`todo_42`) used to disambiguate updates/removals.
 
 ## 8. Engine Components
 
@@ -145,10 +185,31 @@ end
 
 Supported server actions:
 
-- `turbo_stream_append(target)`
-- `turbo_stream_prepend(target)`
-- `turbo_stream_update(target)`
-- `turbo_stream_remove(target)`
+- `broadcast_append(target)`
+- `broadcast_prepend(target)`
+- `broadcast_update(target)`
+- `broadcast_remove(target)`
+
+Optional adapter methods may be provided for compatibility with existing app naming conventions.
+
+### 9.1 Channel Contract
+
+Subscription input (from client to channel):
+
+- `resource` (required): logical resource key, allowlisted.
+- `tenant` (optional): tenant identifier if multi-tenant app.
+
+Server behavior:
+
+- Build resolver context from authenticated/signed connection identity + allowlisted params.
+- If params are invalid or unauthorized, reject subscription.
+- If resolver cannot produce key, reject subscription.
+- On success, `stream_from(resolved_stream_key)`.
+
+Rejection semantics:
+
+- Channel rejects subscription without exposing sensitive authorization details.
+- Development logs may include structured reason code (`invalid_resource`, `unauthorized_scope`, `missing_identity`).
 
 ## 10. File/Folder Layout
 
@@ -171,6 +232,7 @@ lib/generators/broadcast_hub/install_generator.rb
 - Renderer failures are configurable: log + skip (default) or raise in strict mode.
 - Channel subscription failure returns rejection when stream key missing/invalid.
 - Client ignores invalid events and logs warnings in development.
+- Payload validation failures should include non-sensitive reason codes for diagnostics.
 
 ## 12. Testing Strategy
 
@@ -179,6 +241,11 @@ lib/generators/broadcast_hub/install_generator.rb
 - Dummy app integration tests on Rails 5.2 baseline.
 - JS behavior tests for jQuery DOM operations.
 - Coverage for both auth and no-auth stream resolver modes.
+- Tenant isolation tests (cannot subscribe/broadcast across unauthorized tenant).
+- Unauthorized subscription attempts (rejection path).
+- Malformed payload rejection and no-op behavior on client.
+- XSS regression tests for escaped/safe template output.
+- Ordering/idempotency tests for repeated or out-of-order events.
 
 ## 13. Adoption Plan for Existing Apps
 
@@ -200,5 +267,5 @@ lib/generators/broadcast_hub/install_generator.rb
 ## 15. Open Questions (to resolve in planning)
 
 - Naming final package (`BroadcastHub` vs project-specific brand).
-- Whether `update` default should be `replaceWith` or `.html` per host app conventions.
+- Whether `update_strategy` default should be `:replace_with` or `:html` per host app conventions.
 - How much metadata to include by default in payload `meta`.
