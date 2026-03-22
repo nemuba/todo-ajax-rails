@@ -11,12 +11,18 @@ RSpec.describe 'BroadcastHub initializer configuration', type: :model do
     expect(configuration.stream_key_resolver).to respond_to(:call)
 
     user = instance_double('User', id: 7)
-    context = instance_double(
+    user_context = instance_double(
       'BroadcastHub::Context',
       resource_name: 'todo',
       current_user: user
     )
+    anonymous_context = instance_double(
+      'BroadcastHub::Context',
+      resource_name: 'todo',
+      current_user: nil
+    )
 
-    expect(configuration.stream_key_resolver.call(context)).to eq('resource:todo:user:7')
+    expect(configuration.stream_key_resolver.call(user_context)).to eq('resource:todo:user:7')
+    expect(configuration.stream_key_resolver.call(anonymous_context)).to eq('resource:todo')
   end
 end

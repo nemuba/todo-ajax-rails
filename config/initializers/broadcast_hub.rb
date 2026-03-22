@@ -8,6 +8,12 @@ BroadcastHub.configure do |config|
   end
 
   config.stream_key_resolver = lambda do |context|
-    "resource:#{context.resource_name}:user:#{context.current_user.id}"
+    user = context.respond_to?(:current_user) ? context.current_user : nil
+
+    if user.present?
+      "resource:#{context.resource_name}:user:#{user.id}"
+    else
+      "resource:#{context.resource_name}"
+    end
   end
 end
