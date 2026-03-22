@@ -1,7 +1,14 @@
+import BroadcastHubJQueryController from './jquery_controller';
+import BroadcastHubSubscription from './subscription';
+
 const root = typeof window !== 'undefined' ? window : globalThis;
 
-export const BroadcastHubJQueryController = root.BroadcastHubJQueryController;
-export const BroadcastHubSubscription = root.BroadcastHubSubscription;
+if (root) {
+  root.BroadcastHubJQueryController = root.BroadcastHubJQueryController || BroadcastHubJQueryController;
+  root.BroadcastHubSubscription = root.BroadcastHubSubscription || BroadcastHubSubscription;
+}
+
+export { BroadcastHubJQueryController, BroadcastHubSubscription };
 
 export default {
   BroadcastHubJQueryController,
