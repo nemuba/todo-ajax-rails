@@ -2,7 +2,7 @@
 
 # TodosController
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[show edit update destroy confirm_delete inline more]
+  before_action :set_todo, only: %i[show edit update destroy confirm_delete highlight inline more]
   before_action :instance_todo, only: %i[create]
 
   # GET /todos or /todos.json
@@ -10,6 +10,7 @@ class TodosController < ApplicationController
     @todos = TodoService.call(params, current_user)
 
     respond_to do |format|
+      format.html { render 'index' }
       format.js { render 'todos/js/index' }
       format.json { render json: @todos, each_serializer: TodoSerializer, status: :ok }
     end
@@ -90,6 +91,19 @@ class TodosController < ApplicationController
   def inline
     respond_to do |format|
       format.js { render 'todos/js/inline' }
+    end
+  end
+
+  def highlight
+    @todo.broadcast_dispatch(
+      "##{dom_id(@todo)}",
+      'todo:highlight',
+      { id: @todo.id, title: @todo.title }
+    )
+
+    respond_to do |format|
+      format.js { head :ok }
+      format.json { head :ok }
     end
   end
 
