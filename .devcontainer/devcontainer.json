@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devcontainer.schema.json",
+  "name": "todo-ajax-rails",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "runServices": [
+    "db",
+    "redis"
+  ],
+  "forwardPorts": [
+    3000,
+    5432,
+    6379
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Rails app",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "requireLocalPort": false
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "silent",
+      "requireLocalPort": false
+    }
+  },
+  "postCreateCommand": ".devcontainer/boot.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rebornix.Ruby",
+        "wingrunr21.vscode-ruby",
+        "castwide.solargraph",
+        "kaiwood.endwise",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "connorshea.vscode-ruby-test-adapter"
+      ],
+      "settings": {
+        "ruby.useBundler": true,
+        "ruby.useLanguageServer": true,
+        "ruby.intellisense": "rubyLocate",
+        "ruby.lint": {
+          "rubocop": true,
+          "ruby": true
+        },
+        "rspec.command": "bundle exec rspec",
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          }
+        },
+        "sqltools.connections": [
+          {
+            "name": "Postgres (dev)",
+            "driver": "PostgreSQL",
+            "previewLimit": 50,
+            "server": "db",
+            "port": 5432,
+            "database": "todo_development",
+            "username": "postgres",
+            "password": "postgres"
+          }
+        ]
+      }
+    }
+  }
+}

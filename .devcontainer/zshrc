@@ -1,0 +1,20 @@
+export PATH="/workspace/.bundle/bin:$HOME/.local/bin:$PATH"
+export EDITOR="code --wait"
+
+autoload -Uz promptinit && promptinit
+prompt agnoster
+
+set -o vi
+
+alias be="bundle exec"
+alias rspec="bundle exec rspec"
+alias foreman="bundle exec foreman"
+alias rails="bundle exec rails"
+
+if [ -f ~/.zprofile ]; then
+  source ~/.zprofile
+fi
+
+if [ -d /workspace ]; then
+  cd /workspace
+fi
